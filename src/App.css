@@ -1,42 +1,97 @@
-#root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
+/* Reset default margins and paddings */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
+/* Full viewport height and flex layout */
+html, body {
+  height: 100%;
+  font-family: 'Arial', sans-serif;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #fff;
 }
 
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+/* Centering the login container */
+.login-container {
+  background-color: #1e1e1e; /* Slightly lighter background */
+  padding: 40px;
+  border-radius: 8px;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.3); /* Add a subtle shadow */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
-  }
+/* Heading style */
+h2 {
+  color: #b39ddb; /* Light purple color */
+  font-size: 1.8rem;
+  margin-bottom: 20px;
+  letter-spacing: 1px;
 }
 
-.card {
-  padding: 2em;
+/* Input group styling */
+.input-group {
+  width: 100%;
+  margin-bottom: 20px;
 }
 
-.read-the-docs {
-  color: #888;
+/* Label styling */
+label {
+  color: #d1c4e9; /* Light purple for labels */
+  font-size: 0.9rem;
+  display: block;
+  margin-bottom: 5px;
+}
+
+/* Input field styling */
+input {
+  width: 100%;
+  padding: 12px;
+  background-color: #333;
+  border: 1px solid #5c6bc0;
+  border-radius: 5px;
+  color: #fff;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+}
+
+input:focus {
+  outline: none;
+  border-color: #9575cd; /* Lighter purple for focus */
+  background-color: #424242;
+}
+
+input::placeholder {
+  color: #b0bec5;
+}
+
+/* Button styling */
+button {
+  width: 100%;
+  padding: 12px;
+  background-color: #7e57c2;
+  border: none;
+  border-radius: 5px;
+  color: white;
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+button:hover {
+  background-color: #5c3d9e;
+}
+
+/* Error message style */
+.error {
+  color: #f44336; /* Red color for error messages */
+  margin-top: 10px;
+  font-size: 0.9rem;
 }
