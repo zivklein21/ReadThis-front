@@ -1,0 +1,79 @@
+/* Ensures full-page centering */
+.page-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  width: 100vw; /* Ensures full width */
+  background: #ffffff; /* White background */
+}
+
+/* Form box */
+.auth-form {
+  width: 350px;
+  padding: 30px;
+  background: rgba(0, 0, 0, 0.85); /* Slight opacity */
+  color: white;
+  border-radius: 12px;
+  box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.3); /* Soft shadow */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  position: absolute; /* Centering workaround */
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+
+/* Title */
+.auth-form h2 {
+  margin-bottom: 20px;
+  color: #d1a0d7; /* Light Purple */
+}
+
+/* Input fields */
+input {
+  width: 100%;
+  padding: 12px;
+  margin-bottom: 15px;
+  border: 1px solid #d1a0d7;
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.1);
+  color: white;
+}
+
+/* Button */
+button {
+  width: 30%;
+  padding: 12px;
+  background: #d1a0d7;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: bold;
+  transition: background 0.3s ease;
+  color: black;
+}
+
+button:hover {
+  background: #c08ac7;
+}
+
+/* Toggle text */
+p {
+  margin-top: 10px;
+  font-size: 14px;
+}
+
+.form-toggle {
+  color: #d1a0d7;
+  text-decoration: none;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.form-toggle:hover {
+  text-decoration: underline;
+}

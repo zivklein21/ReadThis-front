@@ -1,17 +1,19 @@
 import React from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
-import SignInPage from "./Pages/LoginPage";
-import SignUpPage from "./Pages/Signup";
+import SignIn from "./components/AuthPages/Login";
+import SignUp from "./components/AuthPages/Signup";
 
 const App: React.FC = () => {
   return (
+    <div className="page-container">
     <Router>
       <Routes>
-        <Route path="/" element={<SignInPage />} />
-        <Route path="/signin" element={<SignInPage />} />
-        <Route path="/signup" element={<SignUpPage />} />
+        <Route path="/" element={<SignIn />} />
+        <Route path="/signin" element={<SignIn />} />
+        <Route path="/signup" element={<SignUp />} />
       </Routes>
     </Router>
+    </div>
   );
 };
 
