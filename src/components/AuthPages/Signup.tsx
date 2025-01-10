@@ -1,17 +1,31 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import GoogleIcon from "../Icons/GoogleIcon";
 import "./Auth.css";
 
-const SignUp: React.FC = () => {
+interface SignUpProps {
+  toggleForm: () => void;
+}
+
+const SignUp: React.FC<SignUpProps> = ({ toggleForm }) => {
   return (
     <div className="auth-form">
       <h2>Sign Up</h2>
       <input type="email" placeholder="Email" />
       <input type="text" placeholder="Phone" />
       <input type="password" placeholder="Password" />
-      <button>Sign Up</button>
+
+      <div className="button-group">
+        <button className="signup-btn">Sign Up</button>
+        <button className="google-btn">
+          <GoogleIcon />
+        </button>
+      </div>
+
       <p>
-        Already have an account? <Link to="/signin">Sign In</Link>
+        Already have an account?{" "}
+        <span className="form-toggle" onClick={toggleForm}>
+          Sign In
+        </span>
       </p>
     </div>
   );
