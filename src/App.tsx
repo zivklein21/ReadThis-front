@@ -1,18 +1,23 @@
-import React, { useState } from "react";
+import React from "react";
 import SignIn from "./components/AuthPages/Login";
 import SignUp from "./components/AuthPages/Signup";
+import Profile from "./components/ProfilePage/ProfilePage";
+import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 import "./components/AuthPages/Auth.css";
+import { GoogleOAuthProvider } from "@react-oauth/google";
 
 const App: React.FC = () => {
-  const [isSignUp, setIsSignUp] = useState(false);
 
   return (
       <div className="page-container">
-        {isSignUp ? (
-          <SignUp toggleForm={() => setIsSignUp(false)} />
-        ) : (
-          <SignIn toggleForm={() => setIsSignUp(true)} />
-        )}
+        <Router>
+          <Routes>
+            <Route path="/" element={<Navigate to="/signin" />}/>
+            <Route path="/signin" element={<SignIn />} />
+            <Route path="/signup" element={<SignUp />} />
+            <Route path="/profile" element={<Profile />} />
+          </Routes>
+        </Router>
     </div>
   );
 };

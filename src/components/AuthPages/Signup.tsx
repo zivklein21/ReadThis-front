@@ -1,14 +1,11 @@
 import React, { useState } from "react";
+import { Link } from "react-router-dom";
 import "./Auth.css";
 import readThis from "../../assets/readThis.svg"
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import { GoogleLogin, CredentialResponse } from "@react-oauth/google";
 
-
-interface SignUpProps {
-  toggleForm: () => void;
-}
 
 const googleResponseMessage = (credentialResponse:CredentialResponse) => {
   console.log("Google Error")
@@ -20,7 +17,7 @@ const googleErrorMessage = () => {
 }
 
 
-const SignUp: React.FC<SignUpProps> = ({ toggleForm }) => {
+const SignUp: React.FC = () => {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
@@ -84,9 +81,9 @@ const SignUp: React.FC<SignUpProps> = ({ toggleForm }) => {
 
       <p>
         Already have an account?{" "}
-        <span className="form-toggle" onClick={toggleForm}>
+        <Link to="/signin" className="form-toggle">
           Sign In
-        </span>
+        </Link>
       </p>
       </div>
     </div>
