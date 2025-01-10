@@ -1,6 +1,7 @@
 import React from "react";
 import GoogleIcon from "../Icons/GoogleIcon";
 import readThis from "../../assets/readThis.svg"
+import {openGoogleLoginPopup} from "../../Utils/GoogleAuth"
 import "./Auth.css";
 
 interface SignInProps {
@@ -18,7 +19,7 @@ const SignIn: React.FC<SignInProps> = ({ toggleForm }) => {
 
         <div className="button-group">
           <button>Sign In</button>
-          <button className="google-btn">
+          <button className="google-btn" onClick={openGoogleLoginPopup}>
             <GoogleIcon />
           </button>
         </div>
