@@ -4,7 +4,7 @@
   justify-content: space-between; /* רווח בין האלמנטים */
   align-items: center; /* ממרכז את האלמנטים לגובה */
   padding: 15px 30px;
-  background-color: #000;
+  background-color: rgba(0, 0, 0, 0.85); /* Slight opacity */
   color: #d1a0d7;
   box-sizing: border-box;
 }
