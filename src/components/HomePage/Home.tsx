@@ -1,25 +1,11 @@
 import React from "react";
+import NavBar from "../NavBar/NavBar";
 import styles from "./Home.module.css";
-import logo from "../../assets/readThis_purple.svg";
-import { FaUser } from "react-icons/fa";
 
 const Home: React.FC = () => {
-  const isAuthenticated = false; // check if user is connected
-
-  const handleIconClick = () => {
-    if (!isAuthenticated) {
-      window.location.href = "/signin";
-    }
-  };
-
   return (
     <div className={styles.container}>
-      {/* Header */}
-      <header className={styles.header}>
-        <img src={logo} alt="Logo" className={styles.logo} />
-        <h1 className={styles.title}>ReadThis</h1>
-        <FaUser className={styles.userIcon} onClick={handleIconClick} />
-      </header>
+      <NavBar />
 
       {/* Main Content */}
       <main className={styles.main}>

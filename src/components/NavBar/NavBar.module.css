@@ -1,0 +1,35 @@
+.navbar {
+  width: 100%;
+  display: flex;
+  justify-content: space-between; /* רווח בין האלמנטים */
+  align-items: center; /* ממרכז את האלמנטים לגובה */
+  padding: 15px 30px;
+  background-color: #000;
+  color: #d1a0d7;
+  box-sizing: border-box;
+}
+
+.logo {
+  height: 50px; /* גובה הלוגו */
+  width: auto;
+}
+
+.title {
+  font-size: 24px;
+  margin: 0;
+  color: #d1a0d7;
+  text-align: center; /* ממרכז את הכותרת */
+  flex: 1; /* נותן לכותרת מקום להתמקם במרכז */
+}
+
+.userIcon {
+  font-size: 30px;
+  color: #d1a0d7;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+  margin-left: auto;
+}
+
+.userIcon:hover {
+  transform: scale(1.1);
+}
