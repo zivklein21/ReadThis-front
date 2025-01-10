@@ -14,7 +14,7 @@ const Profile: React.FC = () => {
     profileImage: "https://via.placeholder.com/100", // Placeholder image
   });
 
-  const [posts, setPosts] = useState<Post[]>([
+  const [posts] = useState<Post[]>([
     { id: 1, content: "First post! 🎉" },
     { id: 2, content: "Loving this app!" },
   ]);
