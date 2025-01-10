@@ -1,11 +1,9 @@
-/* Reset default margins and paddings */
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
 
-/* Full viewport height and flex layout */
 html, body {
   height: 100%;
   font-family: 'Arial', sans-serif;
@@ -15,41 +13,38 @@ html, body {
   color: #fff;
 }
 
-/* Centering the login container */
 .login-container {
-  background-color: #1e1e1e; /* Slightly lighter background */
+  background-color: #1e1e1e;
   padding: 40px;
   border-radius: 8px;
-  box-shadow: 0 0 15px rgba(0, 0, 0, 0.3); /* Add a subtle shadow */
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
 }
 
-/* Heading style */
 h2 {
-  color: #b39ddb; /* Light purple color */
+  color: #b39ddb; 
   font-size: 1.8rem;
   margin-bottom: 20px;
   letter-spacing: 1px;
 }
 
-/* Input group styling */
 .input-group {
   width: 100%;
   margin-bottom: 20px;
 }
 
-/* Label styling */
+
 label {
-  color: #d1c4e9; /* Light purple for labels */
+  color: #d1c4e9;
   font-size: 0.9rem;
   display: block;
   margin-bottom: 5px;
 }
 
-/* Input field styling */
+
 input {
   width: 100%;
   padding: 12px;
@@ -63,7 +58,7 @@ input {
 
 input:focus {
   outline: none;
-  border-color: #9575cd; /* Lighter purple for focus */
+  border-color: #9575cd;
   background-color: #424242;
 }
 
@@ -71,7 +66,6 @@ input::placeholder {
   color: #b0bec5;
 }
 
-/* Button styling */
 button {
   width: 100%;
   padding: 12px;
@@ -89,9 +83,13 @@ button:hover {
   background-color: #5c3d9e;
 }
 
-/* Error message style */
 .error {
-  color: #f44336; /* Red color for error messages */
+  color: #f44336;
   margin-top: 10px;
   font-size: 0.9rem;
+}
+
+.logo {
+  margin-top: 0px;
+  
 }
