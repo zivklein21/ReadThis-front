@@ -1,13 +1,11 @@
 import React, { useState } from "react";
+import { Link } from "react-router-dom";
 import readThis from "../../assets/readThis.svg"
 import "./Auth.css";
 import { GoogleLogin, CredentialResponse } from "@react-oauth/google";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 
-interface SignInProps {
-  toggleForm: () => void;
-}
 
 const googleResponseMessage = (credentialResponse:CredentialResponse) => {
   console.log("Google Error")
@@ -18,7 +16,7 @@ const googleErrorMessage = () => {
   console.log("Google Error")
 }
 
-const SignIn: React.FC<SignInProps> = ({ toggleForm }) => {
+const SignIn: React.FC = () => {
   const [password, setPassword] = useState("");
     const [showPassword, setShowPassword] = useState(false);
   const handlePasswordToggle = () => setShowPassword(!showPassword);
@@ -45,9 +43,9 @@ const SignIn: React.FC<SignInProps> = ({ toggleForm }) => {
         <GoogleLogin onSuccess={googleResponseMessage} onError={googleErrorMessage}/>
         <p>
           Don't have an account?{" "}
-          <span className="form-toggle" onClick={toggleForm}>
+          <Link to="/signup" className="form-toggle">
             Sign Up
-          </span>
+          </Link>
         </p>
       </div>
     </div>
