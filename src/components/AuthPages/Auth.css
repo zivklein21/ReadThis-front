@@ -9,7 +9,9 @@
 
 .auth-form {
   width: 350px;
-  padding: 30px;
+  padding-left: 30px;
+  padding-right: 30px;
+  margin-top: 50px;
   background: rgba(0, 0, 0, 0.85);
   color: white;
   border-radius: 12px;
@@ -106,4 +108,11 @@ p {
   height: 24px;
   stroke: #d1a0d7;
   stroke-width: 2;
+}
+
+.app-logo {
+  width: 200px;
+  height: auto;
+  margin-bottom: 500px;
+  padding-bottom: 10px;
 }
