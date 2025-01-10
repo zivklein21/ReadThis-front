@@ -1,11 +1,19 @@
 import React from "react";
-import GoogleIcon from "../Icons/GoogleIcon";
 import readThis from "../../assets/readThis.svg"
-import {openGoogleLoginPopup} from "../../Utils/GoogleAuth"
 import "./Auth.css";
+import { GoogleLogin, CredentialResponse } from "@react-oauth/google";
 
 interface SignUpProps {
   toggleForm: () => void;
+}
+
+const googleResponseMessage = (credentialResponse:CredentialResponse) => {
+  console.log("Google Error")
+  console.log(credentialResponse)
+}
+
+const googleErrorMessage = () => {
+  console.log("Google Error")
 }
 
 const SignUp: React.FC<SignUpProps> = ({ toggleForm }) => {
@@ -18,12 +26,8 @@ const SignUp: React.FC<SignUpProps> = ({ toggleForm }) => {
         <input type="text" placeholder="Phone" />
         <input type="password" placeholder="Password" />
 
-        <div className="button-group">
           <button className="signup-btn">Sign Up</button>
-          <button className="google-btn" onClick={openGoogleLoginPopup}>
-            <GoogleIcon />
-          </button>
-        </div>
+          <GoogleLogin onSuccess={googleResponseMessage} onError={googleErrorMessage}/>
 
         <p>
           Already have an account?{" "}

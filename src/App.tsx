@@ -7,12 +7,12 @@ const App: React.FC = () => {
   const [isSignUp, setIsSignUp] = useState(false);
 
   return (
-    <div className="page-container">
-      {isSignUp ? (
-        <SignUp toggleForm={() => setIsSignUp(false)} />
-      ) : (
-        <SignIn toggleForm={() => setIsSignUp(true)} />
-      )}
+      <div className="page-container">
+        {isSignUp ? (
+          <SignUp toggleForm={() => setIsSignUp(false)} />
+        ) : (
+          <SignIn toggleForm={() => setIsSignUp(true)} />
+        )}
     </div>
   );
 };
