@@ -1,0 +1,46 @@
+html, body {
+  overflow-x: hidden;
+  width: 100vw;
+}
+
+.navbar {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 30px;
+  background-color: rgba(0, 0, 0, 0.85);
+  color: #d1a0d7;
+  box-sizing: border-box;
+}
+
+.logo {
+  height: 50px;
+  width: auto;
+  transition: transform 0.3s ease;
+}
+
+.logo:hover {
+  transform: scale(1.1);
+}
+
+
+.title {
+  font-size: 24px;
+  margin: 0;
+  color: #d1a0d7;
+  text-align: center;
+  flex: 1;
+}
+
+.userIcon {
+  font-size: 30px;
+  color: #d1a0d7;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+  margin-left: auto;
+}
+
+.userIcon:hover {
+  transform: scale(1.1);
+}
