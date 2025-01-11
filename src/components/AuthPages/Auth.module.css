@@ -28,7 +28,7 @@
 
 .formTitle {
   margin-bottom: 20px;
-  color: #d1a0d7; 
+  color: #d1a0d7;
 }
 
 .formInput {
@@ -138,3 +138,4 @@
   background-color: white !important; /* רקע שחור במעבר עכבר */
   color: black !important; /* טקסט לבן במעבר עכבר */
 }
+

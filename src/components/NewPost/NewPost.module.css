@@ -1,0 +1,66 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background-color: #f9f9f9;
+  width: 100vw; /* התפרסות לכל רוחב המסך */
+}
+
+.content {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex: 1;
+  padding: 20px;
+}
+
+.title {
+  margin-bottom: 50px !important; /* רווח תחתון בין הכותרת לטופס */
+}
+
+.paper {
+  width: 100%;
+  max-width: 800px; /* רוחב מקסימלי לטופס */
+  padding: 30px;
+  background-color: #f5f5f5;
+  border-radius: 10px;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* מרכז אופקית */
+  gap: 20px;
+}
+
+.button {
+  width: 20%;
+  background-color: #d1a0d7; /* צבע רקע */
+  color: black; /* צבע טקסט */
+  font-size: 16px; /* גודל הטקסט */
+  font-weight: bold; /* טקסט מודגש */
+  padding: 10px 10px; /* ריווח פנימי */
+  border: none; /* אין גבול */
+  border-radius: 6px; /* פינות מעוגלות */
+  cursor: pointer; /* סמן יד */
+  transition: background-color 0.3s ease; /* אפקט מעבר */
+}
+
+.button:hover {
+  background-color: #c08ac7; /* צבע רקע במעבר עכבר */
+}
+
+.uploadButton {
+  color: #000 !important; /* טקסט שחור */
+  border: 1px solid #000 !important; /* גבול שחור */
+  font-size: 16px !important; /* גודל טקסט */
+  font-weight: bold !important; /* טקסט מודגש */
+  padding: 10px 20px !important; /* ריווח פנימי */
+  border-radius: 6px !important; /* פינות מעוגלות */
+  transition: background-color 0.3s ease, color 0.3s ease !important; /* אפקט מעבר */
+}
+
+.uploadButton:hover {
+  background-color: #000 !important; /* רקע שחור במעבר עכבר */
+  color: #fff !important; /* טקסט לבן במעבר עכבר */
+}
