@@ -1,6 +1,13 @@
+// Packages
 import React from "react";
+
+// Components
 import NavBar from "../NavBar/NavBar";
+
+// CSS
 import styles from "./Home.module.css";
+
+// Images
 
 const Home: React.FC = () => {
   return (
