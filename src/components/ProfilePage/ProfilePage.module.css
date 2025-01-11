@@ -67,6 +67,11 @@ html, body {
 .profileDetails {
   flex-grow: 1;
   text-align: left;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 22px;
+  font-weight: bold;
 }
 
 .profileName {
@@ -88,14 +93,6 @@ html, body {
   color: #d1a0d7;
 }
 
-.profileText {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  font-size: 22px;
-  font-weight: bold;
-}
-
 .usernameInput {
   width: 15%;
   font-size: 22px;
@@ -103,20 +100,6 @@ html, body {
   border: none;
   outline: none;
   text-align: left;
-}
-
-.editBtn {
-  color: #d1a0d7;
-  border: none;
-  padding: 5px;
-  cursor: pointer;
-  border-radius: 6px;
-  background: transparent;
-  transition: color 0.3s ease;
-}
-
-.editBtn:hover {
-  color: #a76fb0;
 }
 
 .editModeDetails {
@@ -184,5 +167,9 @@ html, body {
   min-width: 200px;
 }
 
-
-
+.purpleBtn {
+  background-color: #ffffff !important; /* Purple */
+  color: #d1a0d7 !important;
+  padding: 10px;
+  border-radius: 50%;
+}
