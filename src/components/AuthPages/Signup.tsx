@@ -80,7 +80,7 @@ const SignUp: React.FC<SignUpProps> = ({ toggleForm }) => {
           />
         </Button>
         {profileImage && (
-          <Typography variant="body2">
+          <Typography variant="body2" className="imageName">
             Selected file: {profileImage.name}
           </Typography>
         )}
