@@ -1,4 +1,4 @@
-.page-container {
+.pageContainer {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -10,7 +10,7 @@
   padding: 0;
 }
 
-.auth-form {
+.authForm {
   width: 350px;
   padding-left: 30px;
   padding-right: 30px;
@@ -26,12 +26,12 @@
   margin: 0;
 }
 
-.auth-form h2 {
+.formTitle {
   margin-bottom: 20px;
   color: #d1a0d7; 
 }
 
-input {
+.formInput {
   width: 100%;
   padding: 12px;
   margin-bottom: 15px;
@@ -39,20 +39,11 @@ input {
   border-radius: 6px;
   background: rgba(255, 255, 255, 0.1);
   color: white;
-}
-
-.auth-form input {
-  width: 100%;
-  padding: 12px;
-  border-radius: 6px;
-  border: 1px solid #d1a0d7;
-  background: rgba(255, 255, 255, 0.1);
-  color: white;
   box-sizing: border-box;
 }
 
-button {
-  width: 80%;
+.actionButton {
+  width: 60%;
   padding: 12px;
   background: #d1a0d7;
   border: none;
@@ -63,42 +54,43 @@ button {
   transition: background 0.3s ease;
   color: black;
   margin-bottom: 5px;
+  margin-top: 10px;
 }
 
-button:hover {
+.actionButton:hover {
   background: #c08ac7;
 }
 
-p {
+.text {
   margin-top: 10px;
   font-size: 14px;
 }
 
-.form-toggle {
+.formToggle {
   color: #d1a0d7;
   text-decoration: none;
   font-weight: bold;
   cursor: pointer;
 }
 
-.form-toggle:hover {
+.formToggle:hover {
   text-decoration: underline;
 }
 
-.app-logo {
+.logo {
   width: 180px;
   height: auto;
   margin-bottom: 30px;
 }
 
-.password-container {
+.passwordContainer {
   display: flex;
   align-items: center;
   position: relative;
   width: 100%;
 }
 
-.password-container input {
+.passwordInput {
   flex: 1;
   width: 100%;
   padding-right: 50px;
@@ -108,9 +100,10 @@ p {
   background: rgba(255, 255, 255, 0.1);
   color: white;
   box-sizing: border-box;
+  margin-bottom: 15px;
 }
 
-.eye-icon {
+.eyeIcon {
   position: absolute;
   right: 12px;
   cursor: pointer;
@@ -122,7 +115,7 @@ p {
   justify-content: center;
 }
 
-.image-preview img {
+.imageInput img {
   width: 80px;
   height: 80px;
   border-radius: 50%;

@@ -1,15 +1,20 @@
+// Packages
 import React from "react";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+
+// Routes
 import Home from "./components/HomePage/Home";
 import SignIn from "./components/AuthPages/Login";
 import SignUp from "./components/AuthPages/Signup";
 import Profile from "./components/ProfilePage/ProfilePage";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import "./components/AuthPages/Auth.css";
+
+// CSS
+import styles from "./components/AuthPages/Auth.module.css";
 
 const App: React.FC = () => {
 
   return (
-      <div className="page-container">
+      <div className={styles.pageContainer}>
         <Router>
           <Routes>
             <Route path="/" element={<Home />}/>

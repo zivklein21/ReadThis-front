@@ -1,11 +1,15 @@
+// Packages
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import "./Auth.css";
-import readThis from "../../assets/readThis.svg"
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import { GoogleLogin, CredentialResponse } from "@react-oauth/google";
 
+// CSS
+import styles from "./Auth.module.css";
+
+// Images
+import readThis from "../../assets/readThis.svg"
 
 const googleResponseMessage = (credentialResponse:CredentialResponse) => {
   console.log("Google Error")
@@ -33,55 +37,57 @@ const SignUp: React.FC = () => {
   };
 
   return (
-    <div className="page-container">
-      <img src={readThis} alt="App Logo" className="app-logo" />
-      <div className="auth-form">
-      <h2>Sign Up</h2>
+    <div className={styles.pageContainer}>
+      <img src={readThis} alt="App Logo" className={styles.logo} />
+      <div className={styles.authForm}>
+      <h2 className={styles.formTitle}>Sign Up</h2>
 
-      <input type="text" placeholder="Username" required />
-      <input type="email" placeholder="Email" required />
+      <input type="text" placeholder="Username" required  className={styles.formInput}/>
+      <input type="email" placeholder="Email" required className={styles.formInput}/>
 
-      <div className="password-container">
+      <div className={styles.passwordContainer}>
         <input
           type={showPassword ? "text" : "password"}
           placeholder="Password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           required
+          className={styles.passwordInput}
         />
-        <span className="eye-icon" onClick={handlePasswordToggle}>
+        <span className={styles.eyeIcon} onClick={handlePasswordToggle}>
           {showPassword ? <VisibilityOffIcon /> : <VisibilityIcon />}
         </span>
       </div>
 
-      <div className="password-container">
+      <div className={styles.passwordContainer}>
         <input
           type={showConfirmPassword ? "text" : "password"}
           placeholder="Confirm Password"
           value={confirmPassword}
           onChange={(e) => setConfirmPassword(e.target.value)}
           required
+          className={styles.passwordInput}
         />
-        <span className="eye-icon" onClick={handleConfirmPasswordToggle}>
+        <span className={styles.eyeIcon} onClick={handleConfirmPasswordToggle}>
           {showConfirmPassword ? <VisibilityOffIcon /> : <VisibilityIcon />}
         </span>
       </div>
 
-      <input type="file" accept="image/*" onChange={handleImageUpload} />
+      <input type="file" accept="image/*" onChange={handleImageUpload}/>
 
       {profileImage && (
-        <div className="image-preview">
+        <div className={styles.imageInput}>
           <img src={URL.createObjectURL(profileImage)} alt="Profile Preview" />
         </div>
       )}
 
-        <button className="signup-btn">Sign Up</button>
+        <button className={styles.actionButton}>Sign Up</button>
         <GoogleLogin onSuccess={googleResponseMessage} onError={googleErrorMessage}/>
 
 
-      <p>
+      <p className={styles.text}>
         Already have an account?{" "}
-        <Link to="/signin" className="form-toggle">
+        <Link to="/signin" className={styles.formToggle}>
           Sign In
         </Link>
       </p>
