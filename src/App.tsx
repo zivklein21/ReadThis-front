@@ -1,18 +1,24 @@
-import React, { useState } from "react";
+// Packages
+import React from "react";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+
+// Routes
 import SignIn from "./components/AuthPages/Login";
 import SignUp from "./components/AuthPages/Signup";
-import "./components/AuthPages/Auth.css";
+
+// CSS
+import styles from "./components/AuthPages/Auth.module.css";
 
 const App: React.FC = () => {
-  const [isSignUp, setIsSignUp] = useState(false);
-
   return (
-      <div className="page-container">
-        {isSignUp ? (
-          <SignUp toggleForm={() => setIsSignUp(false)} />
-        ) : (
-          <SignIn toggleForm={() => setIsSignUp(true)} />
-        )}
+    <div className={styles.pageContainer}>
+      <Router>
+        <Routes>
+          <Route path="/" element={<SignIn />} />
+          <Route path="/signin" element={<SignIn />} />
+          <Route path="/signup" element={<SignUp />} />
+        </Routes>
+      </Router>
     </div>
   );
 };

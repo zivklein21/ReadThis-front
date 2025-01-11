@@ -1,14 +1,16 @@
+// Packages
 import React, { useState } from "react";
 import { Button, Typography } from "@mui/material";
-import "./Auth.css";
-import readThis from "../../assets/readThis.svg";
+import { Link } from "react-router-dom";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import { GoogleLogin, CredentialResponse } from "@react-oauth/google";
 
-interface SignUpProps {
-  toggleForm: () => void;
-}
+// CSS
+import styles from "./Auth.module.css";
+
+// Images
+import readThis from "../../assets/readThis.svg";
 
 const googleResponseMessage = (credentialResponse: CredentialResponse) => {
   console.log("Google Error");
@@ -19,7 +21,7 @@ const googleErrorMessage = () => {
   console.log("Google Error");
 };
 
-const SignUp: React.FC<SignUpProps> = ({ toggleForm }) => {
+const SignUp: React.FC = () => {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
@@ -36,41 +38,60 @@ const SignUp: React.FC<SignUpProps> = ({ toggleForm }) => {
   };
 
   return (
-    <div className="page-container">
-      <img src={readThis} alt="App Logo" className="app-logo" />
-      <div className="auth-form">
-        <h2>Sign Up</h2>
+    <div className={styles.pageContainer}>
+      <img src={readThis} alt="App Logo" className={styles.logo} />
+      <div className={styles.authForm}>
+        <h2 className={styles.formTitle}>Sign Up</h2>
 
-        <input type="text" placeholder="Username" required />
-        <input type="email" placeholder="Email" required />
+        <input
+          type="text"
+          placeholder="Username"
+          required
+          className={styles.formInput}
+        />
+        <input
+          type="email"
+          placeholder="Email"
+          required
+          className={styles.formInput}
+        />
 
-        <div className="password-container">
+        <div className={styles.passwordContainer}>
           <input
             type={showPassword ? "text" : "password"}
             placeholder="Password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
+            className={styles.passwordInput}
           />
-          <span className="eye-icon" onClick={handlePasswordToggle}>
+          <span className={styles.eyeIcon} onClick={handlePasswordToggle}>
             {showPassword ? <VisibilityOffIcon /> : <VisibilityIcon />}
           </span>
         </div>
 
-        <div className="password-container">
+        <div className={styles.passwordContainer}>
           <input
             type={showConfirmPassword ? "text" : "password"}
             placeholder="Confirm Password"
             value={confirmPassword}
             onChange={(e) => setConfirmPassword(e.target.value)}
             required
+            className={styles.passwordInput}
           />
-          <span className="eye-icon" onClick={handleConfirmPasswordToggle}>
+          <span
+            className={styles.eyeIcon}
+            onClick={handleConfirmPasswordToggle}
+          >
             {showConfirmPassword ? <VisibilityOffIcon /> : <VisibilityIcon />}
           </span>
         </div>
 
-        <Button variant="outlined" component="label" className="uploadButton">
+        <Button
+          variant="outlined"
+          component="label"
+          className={styles.uploadButton}
+        >
           Upload Image
           <input
             type="file"
@@ -80,22 +101,22 @@ const SignUp: React.FC<SignUpProps> = ({ toggleForm }) => {
           />
         </Button>
         {profileImage && (
-          <Typography variant="body2" className="imageName">
+          <Typography variant="body2" className={styles.imageName}>
             Selected file: {profileImage.name}
           </Typography>
         )}
 
-        <button className="signup-btn">Sign Up</button>
+        <button className={styles.actionButton}>Sign Up</button>
         <GoogleLogin
           onSuccess={googleResponseMessage}
           onError={googleErrorMessage}
         />
 
-        <p>
+        <p className={styles.text}>
           Already have an account?{" "}
-          <span className="form-toggle" onClick={toggleForm}>
+          <Link to="/signin" className={styles.formToggle}>
             Sign In
-          </span>
+          </Link>
         </p>
       </div>
     </div>
