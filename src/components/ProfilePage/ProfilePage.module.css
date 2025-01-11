@@ -105,20 +105,6 @@ html, body {
   text-align: left;
 }
 
-.editBtn {
-  color: #d1a0d7;
-  border: none;
-  padding: 5px;
-  cursor: pointer;
-  border-radius: 6px;
-  background: transparent;
-  transition: color 0.3s ease;
-}
-
-.editBtn:hover {
-  color: #a76fb0;
-}
-
 .editModeDetails {
   display: flex;
   flex-direction: column;
@@ -184,5 +170,9 @@ html, body {
   min-width: 200px;
 }
 
-
-
+.purpleBtn {
+  background-color: #ffffff !important; /* Purple */
+  color: #d1a0d7 !important;
+  padding: 10px;
+  border-radius: 50%;
+}

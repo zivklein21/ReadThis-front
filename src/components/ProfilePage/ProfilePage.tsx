@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import styles from "./ProfilePage.module.css";
 import NavBar from "../NavBar/NavBar";
+import IconButton from "@mui/material/Button";
 import EditIcon from "@mui/icons-material/Edit";
 import SaveIcon from "@mui/icons-material/Save";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
@@ -95,13 +96,12 @@ const Profile: React.FC = () => {
               </div>
             </div>
 
-            {/* ✅ Edit/Save Button */}
-            <button
-              className={`${styles.editBtn} ${isEditing ? styles.saveBtn : ""}`}
-              onClick={() => (isEditing ? handleSave() : setIsEditing(true))}
-            >
-              {isEditing ? <SaveIcon /> : <EditIcon />}
-            </button>
+          <IconButton
+            onClick={() => (isEditing ? handleSave() : setIsEditing(true))}
+            className={styles.purpleBtn}
+          >
+            {isEditing ? <SaveIcon /> : <EditIcon />}
+          </IconButton>
           </div>
         </div>
 
