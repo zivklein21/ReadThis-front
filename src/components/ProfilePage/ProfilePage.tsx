@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import styles from "./ProfilePage.module.css";
 import NavBar from "../NavBar/NavBar";
-import Button from "@mui/base/Button";
+import IconButton from "@mui/material/Button";
 import EditIcon from "@mui/icons-material/Edit";
 import SaveIcon from "@mui/icons-material/Save";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
@@ -91,19 +91,12 @@ const Profile: React.FC = () => {
                 <span className={styles.separator}>|</span>
                 <p className={styles.profileEmail}>{user.email}</p>
             </div>
-
-            <Button
-              variant="contained"
-              color={isEditing ? "success" : "primary"} // Success color for save, primary for edit
-              onClick={() => (isEditing ? handleSave() : setIsEditing(true))}
-              startIcon={isEditing ? <SaveIcon /> : <EditIcon />}
-              sx={{
-                margin: "8px",
-                ...(isEditing ? { backgroundColor: "#4CAF50" } : { backgroundColor: "#1976D2" }) // Custom styling
-              }}
-            >
-              {isEditing ? "Save" : "Edit"}
-    </Button>
+          <IconButton
+            onClick={() => (isEditing ? handleSave() : setIsEditing(true))}
+            className={styles.purpleBtn}
+          >
+            {isEditing ? <SaveIcon /> : <EditIcon />}
+          </IconButton>
           </div>
         </div>
 
