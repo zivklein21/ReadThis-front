@@ -28,7 +28,7 @@
 
 .auth-form h2 {
   margin-bottom: 20px;
-  color: #d1a0d7; 
+  color: #d1a0d7;
 }
 
 input {
@@ -129,4 +129,20 @@ p {
   object-fit: cover;
   margin-top: 10px;
   margin-bottom: 100px;
+}
+
+.uploadButton {
+  color: white !important;
+  border: 1px solid white !important;
+  font-size: 16px !important;
+  font-weight: bold !important;
+  padding: 10px 20px !important;
+  border-radius: 6px !important;
+  transition: background-color 0.3s ease, color 0.3s ease !important;
+  margin-bottom: 10px !important;
+}
+
+.uploadButton:hover {
+  background-color: white !important;
+  color: black !important;
 }
