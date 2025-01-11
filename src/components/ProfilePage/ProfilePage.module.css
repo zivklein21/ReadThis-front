@@ -67,6 +67,11 @@ html, body {
 .profileDetails {
   flex-grow: 1;
   text-align: left;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 22px;
+  font-weight: bold;
 }
 
 .profileName {
@@ -86,14 +91,6 @@ html, body {
   font-size: 24px;
   font-weight: bold;
   color: #d1a0d7;
-}
-
-.profileText {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  font-size: 22px;
-  font-weight: bold;
 }
 
 .usernameInput {

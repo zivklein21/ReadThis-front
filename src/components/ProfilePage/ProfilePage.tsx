@@ -49,7 +49,6 @@ const Profile: React.FC = () => {
   return (
     <div className={styles.container}>
       <NavBar />
-      <div className={styles.profileContainer}>
         <div className={styles.profileBox}>
           <h2 className={styles.sectionTitle}>My Profile</h2>
           <div className={styles.profileInfo}>
@@ -78,9 +77,7 @@ const Profile: React.FC = () => {
               )}
             </div>
 
-            {/* ✅ Username & Email Stay in Place */}
             <div className={styles.profileDetails}>
-              <div className={styles.profileText}>
                 {isEditing ? (
                   <input
                     type="text"
@@ -93,9 +90,7 @@ const Profile: React.FC = () => {
                 )}
                 <span className={styles.separator}>|</span>
                 <p className={styles.profileEmail}>{user.email}</p>
-              </div>
             </div>
-
           <IconButton
             onClick={() => (isEditing ? handleSave() : setIsEditing(true))}
             className={styles.purpleBtn}
@@ -116,7 +111,6 @@ const Profile: React.FC = () => {
             ))}
           </div>
         </div>
-      </div>
     </div>
   );
 };

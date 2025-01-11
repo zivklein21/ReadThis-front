@@ -123,3 +123,18 @@
   margin-top: 10px;
   margin-bottom: 100px;
 }
+
+.uploadButton {
+  color: white !important; /* טקסט שחור */
+  border: 1px solid white !important; /* גבול שחור */
+  font-size: 16px !important; /* גודל טקסט */
+  font-weight: bold !important; /* טקסט מודגש */
+  padding: 10px 20px !important; /* ריווח פנימי */
+  border-radius: 6px !important; /* פינות מעוגלות */
+  transition: background-color 0.3s ease, color 0.3s ease !important; /* אפקט מעבר */
+}
+
+.uploadButton:hover {
+  background-color: white !important; /* רקע שחור במעבר עכבר */
+  color: black !important; /* טקסט לבן במעבר עכבר */
+}
