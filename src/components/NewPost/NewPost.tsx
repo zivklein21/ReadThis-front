@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { TextField, Button, Typography, Paper } from "@mui/material";
 import NavBar from "../NavBar/NavBar"; // ייבוא ה-NavBar
 import styles from "./NewPost.module.css"; // ייבוא ה-CSS המודולרי
+import { createPostWithImage } from "../../Utils/post_service";
 
 const CreatePost: React.FC = () => {
   const [title, setTitle] = useState<string>(""); // כותרת הפוסט
@@ -15,13 +16,14 @@ const CreatePost: React.FC = () => {
   };
 
   const handleSubmit = (e: React.FormEvent) => {
+    console.log("submit");
     e.preventDefault();
 
     const formData = new FormData();
     formData.append("title", title);
     formData.append("content", content);
     if (image) {
-      formData.append("image", image); // הוספת התמונה לנתונים
+      formData.append("image", image);
     }
 
     console.log("Post submitted:", {
@@ -29,6 +31,8 @@ const CreatePost: React.FC = () => {
       content,
       image: image ? image.name : null,
     });
+
+    createPostWithImage(content, title);
 
     setTitle("");
     setContent("");
