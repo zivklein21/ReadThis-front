@@ -11,7 +11,9 @@ import styles from "./Auth.module.css";
 // Images
 import readThis from "../../assets/readThis.svg";
 
+import { AxiosError } from "axios"; // Import AxiosError
 // Services
+import { signIn } from "../../Utils/auth-service";
 
 const SignIn: React.FC = () => {
   const navigate = useNavigate();
@@ -24,20 +26,28 @@ const SignIn: React.FC = () => {
   const handlePasswordToggle = () => setShowPassword(!showPassword);
 
   // Handle sign in with your backend
+  
+
   const handleSignIn = async () => {
     try {
       setError("");
+      console.log("Attempting login...");
+  
       const data = await signIn(email, password);
-      console.log("SignIn response", data);
-      // Example: data might contain a JWT token, user info, etc.
-      // You can store it in context, localStorage, etc.
-      // localStorage.setItem("token", data.token);
-
-      // Navigate the user to a protected route or homepage
-      navigate("/dashboard");
-    } catch (err: any) {
-      // Handle error (e.g., display a message to the user)
-      setError(err.response?.data?.message || "An error occurred during sign in");
+      console.log("Login successful:", data);
+  
+      alert("Login successful!");
+  
+      // Redirect user after login
+      navigate("/");
+    } catch (error) {
+      // Explicitly type the error as an AxiosError
+      const axiosError = error as AxiosError<{ message?: string }>;
+  
+      console.error("Login failed:", axiosError);
+  
+      // Extract error message safely
+      setError(axiosError.response?.data?.message || "Incorrect email or password");
     }
   };
 

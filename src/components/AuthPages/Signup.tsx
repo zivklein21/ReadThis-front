@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import { GoogleLogin, CredentialResponse } from "@react-oauth/google";
-import { AxiosError } from "axios";
+import axios, { AxiosError } from "axios"; 
 
 // CSS
 import styles from "./Auth.module.css";
@@ -13,16 +13,14 @@ import styles from "./Auth.module.css";
 // Images
 import readThis from "../../assets/readThis.svg";
 
-// Utils
-import axiosInstance from "../../Utils/serverInstance"; // import our axios instance
-
 const SignUp: React.FC = () => {
-  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [email, setEmail] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [profileImage, setProfileImage] = useState<File | null>(null);
+
 
   const handlePasswordToggle = () => setShowPassword(!showPassword);
   const handleConfirmPasswordToggle = () =>
@@ -33,24 +31,37 @@ const SignUp: React.FC = () => {
     }
   };
 
-  // ---- NEW: sign up function
   const handleSignUp = async () => {
     try {
       if (password !== confirmPassword) {
         alert("Passwords do not match!");
         return;
       }
-
-      const response = await axiosInstance.post("/auth/register", {
-        email,
-        password,
-      });
-
-      console.log("Registration success:", response.data);
+  
+      console.log("Sending signup request to backend...");
+  
+      const response = await axios.post(
+        "http://localhost:3000/auth/register",
+        { email, password },
+        {
+          headers: { "Content-Type": "application/json" },
+          withCredentials: true, // Allows cookies/auth headers if needed
+        }
+      );
+  
+      console.log("Signup success:", response.data);
       alert("User registered successfully!");
     } catch (err) {
-      const error = err as AxiosError;
-      console.log(error.response?.data);
+      const error = err as AxiosError<{ message?: string }>;
+  
+      console.error("Signup error:", error);
+  
+      if (error.response) {
+        console.error("Server responded with:", error.response.data);
+        alert(`Signup failed: ${error.response.data?.message || "Unknown error"}`);
+      } else {
+        alert("Signup failed: Check console for details.");
+      }
     }
   };
 
@@ -67,12 +78,7 @@ const SignUp: React.FC = () => {
       <img src={readThis} alt="App Logo" className={styles.logo} />
       <div className={styles.authForm}>
         <h2 className={styles.formTitle}>Sign Up</h2>
-        <input
-          type="text"
-          placeholder="Username"
-          required
-          className={styles.formInput}
-        />
+
         <input
           type="email"
           placeholder="Email"
