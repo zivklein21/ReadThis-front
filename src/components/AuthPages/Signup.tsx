@@ -89,26 +89,27 @@ const SignUp: React.FC = () => {
       }
   
       console.log("Sending signup request to backend...");
-  
+
       const response = await axios.post(
         "http://localhost:3000/auth/register",
-        { email, password },
+        { username, email, password },
         {
           headers: { "Content-Type": "application/json" },
           withCredentials: true, // Allows cookies/auth headers if needed
         }
       );
-  
+
       console.log("Signup success:", response.data);
-      alert("User registered successfully!");
+      setErrorMessage(""); // Clear any existing error message
+      alert("User registered successfully!"); // You can replace this with a success label if needed
+
     } catch (err) {
       const error = err as AxiosError<{ message?: string }>;
-  
       console.error("Signup error:", error);
-  
+
       if (error.response) {
         console.error("Server responded with:", error.response.data);
-        alert(`Signup failed: ${error.response.data?.message || "Unknown error"}`);
+        setErrorMessage(error.response.data?.message || "Signup failed. Please try again.");
       } else {
         alert("Signup failed: Check console for details.");
 >>>>>>> d5c4dc8 (Connect signin and signup to back:)
@@ -177,10 +178,7 @@ const SignUp: React.FC = () => {
             required
             className={styles.passwordInput}
           />
-          <span
-            className={styles.eyeIcon}
-            onClick={handleConfirmPasswordToggle}
-          >
+          <span className={styles.eyeIcon} onClick={handleConfirmPasswordToggle}>
             {showConfirmPassword ? <VisibilityOffIcon /> : <VisibilityIcon />}
           </span>
         </div>

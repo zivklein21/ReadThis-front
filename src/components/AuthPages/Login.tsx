@@ -44,9 +44,7 @@ const SignIn: React.FC = () => {
 =======
       const data = await signIn(email, password);
       console.log("Login successful:", data);
-  
-      alert("Login successful!");
-  
+    
       // Redirect user after login
       navigate("/");
     } catch (error) {

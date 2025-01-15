@@ -2,11 +2,11 @@ import axios, { AxiosError } from "axios";
 
 const API_URL = "http://localhost:3000/auth/login";
 
-export const signIn = async (email: string, password: string) => {
+export const signIn = async (username: string, password: string) => {
   try {
     const response = await axios.post(
       API_URL,
-      { email, password },
+      { username, password },
       {
         headers: { "Content-Type": "application/json" },
         withCredentials: true, // Ensures cookies and authentication headers are sent
