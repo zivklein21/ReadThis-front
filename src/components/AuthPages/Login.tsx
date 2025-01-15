@@ -17,7 +17,7 @@ import { signIn } from "../../Utils/auth-service";
 
 const SignIn: React.FC = () => {
   const navigate = useNavigate();
-  const [email, setEmail] = useState("");
+  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState("");
@@ -33,11 +33,9 @@ const SignIn: React.FC = () => {
       setError("");
       console.log("Attempting login...");
   
-      const data = await signIn(email, password);
+      const data = await signIn(username, password);
       console.log("Login successful:", data);
-  
-      alert("Login successful!");
-  
+    
       // Redirect user after login
       navigate("/");
     } catch (error) {
@@ -47,7 +45,7 @@ const SignIn: React.FC = () => {
       console.error("Login failed:", axiosError);
   
       // Extract error message safely
-      setError(axiosError.response?.data?.message || "Incorrect email or password");
+      setError(axiosError.response?.data?.message || "Incorrect Username or password");
     }
   };
 
@@ -71,11 +69,11 @@ const SignIn: React.FC = () => {
         {error && <p className={styles.error}>{error}</p>}
 
         <input
-          type="email"
-          placeholder="Email"
+          type="text"
+          placeholder="Username"
           className={styles.formInput}
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
+          value={username}
+          onChange={(e) => setUsername(e.target.value)}
         />
 
         <div className={styles.passwordContainer}>
