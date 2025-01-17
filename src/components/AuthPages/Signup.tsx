@@ -4,31 +4,20 @@ import { Link, useNavigate } from "react-router-dom";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import { GoogleLogin, CredentialResponse } from "@react-oauth/google";
-<<<<<<< HEAD
 import axios, { AxiosError } from "axios";
-=======
-import axios, { AxiosError } from "axios"; 
-
-// CSS
->>>>>>> d5c4dc8 (Connect signin and signup to back:)
 import styles from "./Auth.module.css";
 import readThis from "../../assets/readThis.svg";
 
 const SignUp: React.FC = () => {
-<<<<<<< HEAD
     const navigate = useNavigate();
   const [password, setPassword] = useState("");
   const [username, setUsername] = useState("");
-=======
-  const [password, setPassword] = useState("");
->>>>>>> d5c4dc8 (Connect signin and signup to back:)
   const [email, setEmail] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [profileImage, setProfileImage] = useState<File | null>(null);
   const [errorMessage, setErrorMessage] = useState<string>("");
-
 
   const handlePasswordToggle = () => setShowPassword(!showPassword);
   const handleConfirmPasswordToggle = () =>
@@ -54,7 +43,6 @@ const SignUp: React.FC = () => {
     }
   
     try {
-<<<<<<< HEAD
       console.log("Sending signup request to backend...");
       const formData = new FormData();
       formData.append("username", username);
@@ -82,37 +70,6 @@ const SignUp: React.FC = () => {
         setErrorMessage(
           "Signup failed: Network error. Please check your connection."
         );
-=======
-      if (password !== confirmPassword) {
-        alert("Passwords do not match!");
-        return;
-      }
-  
-      console.log("Sending signup request to backend...");
-
-      const response = await axios.post(
-        "http://localhost:3000/auth/register",
-        { username, email, password },
-        {
-          headers: { "Content-Type": "application/json" },
-          withCredentials: true, // Allows cookies/auth headers if needed
-        }
-      );
-
-      console.log("Signup success:", response.data);
-      setErrorMessage(""); // Clear any existing error message
-      alert("User registered successfully!"); // You can replace this with a success label if needed
-
-    } catch (err) {
-      const error = err as AxiosError<{ message?: string }>;
-      console.error("Signup error:", error);
-
-      if (error.response) {
-        console.error("Server responded with:", error.response.data);
-        setErrorMessage(error.response.data?.message || "Signup failed. Please try again.");
-      } else {
-        alert("Signup failed: Check console for details.");
->>>>>>> d5c4dc8 (Connect signin and signup to back:)
       }
     }
   };
@@ -131,7 +88,6 @@ const SignUp: React.FC = () => {
       <div className={styles.authForm}>
         <h2 className={styles.formTitle}>Sign Up</h2>
 
-<<<<<<< HEAD
         {errorMessage && (
           <Typography className={styles.errorLabel}>{errorMessage}</Typography>
         )}
@@ -144,8 +100,6 @@ const SignUp: React.FC = () => {
           value={username}
           onChange={(e) => setUsername(e.target.value)}
         />
-=======
->>>>>>> d5c4dc8 (Connect signin and signup to back:)
         <input
           type="email"
           placeholder="Email"
@@ -178,7 +132,10 @@ const SignUp: React.FC = () => {
             required
             className={styles.passwordInput}
           />
-          <span className={styles.eyeIcon} onClick={handleConfirmPasswordToggle}>
+          <span
+            className={styles.eyeIcon}
+            onClick={handleConfirmPasswordToggle}
+          >
             {showConfirmPassword ? <VisibilityOffIcon /> : <VisibilityIcon />}
           </span>
         </div>
