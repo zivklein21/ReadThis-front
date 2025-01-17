@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Button, Typography } from "@mui/material";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import { GoogleLogin, CredentialResponse } from "@react-oauth/google";
@@ -15,6 +15,7 @@ import styles from "./Auth.module.css";
 import readThis from "../../assets/readThis.svg";
 
 const SignUp: React.FC = () => {
+    const navigate = useNavigate();
   const [password, setPassword] = useState("");
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
@@ -66,6 +67,7 @@ const SignUp: React.FC = () => {
       console.log("Signup success:", response.data);
       setErrorMessage(""); // Clear any existing error message
       alert("User registered successfully!");
+      navigate("/signin");
     } catch (err) {
       const error = err as AxiosError<{ message?: string }>;
       console.error("Signup error:", error);
