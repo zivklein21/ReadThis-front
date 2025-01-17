@@ -5,7 +5,7 @@ import styles from "./NewPost.module.css"; // ייבוא ה-CSS המודולרי
 import { createPostWithImage } from "../../Utils/post_service";
 
 const CreatePost: React.FC = () => {
-  const [title, setTitle] = useState<string>(""); // כותרת הפוסט
+  const [bookName, setBookName] = useState<string>(""); // כותרת הפוסט
   const [content, setContent] = useState<string>(""); // תוכן הפוסט
   const [image, setImage] = useState<File | null>(null);
 
@@ -20,21 +20,21 @@ const CreatePost: React.FC = () => {
     e.preventDefault();
 
     const formData = new FormData();
-    formData.append("title", title);
+    formData.append("Book Name", bookName);
     formData.append("content", content);
     if (image) {
       formData.append("image", image);
     }
 
     console.log("Post submitted:", {
-      title,
+      bookName,
       content,
       image: image ? image.name : null,
     });
 
-    createPostWithImage(content, title);
+    createPostWithImage(content, bookName);
 
-    setTitle("");
+    setBookName("");
     setContent("");
     setImage(null); // איפוס התמונה לאחר השליחה
   };
@@ -59,11 +59,11 @@ const CreatePost: React.FC = () => {
           <form onSubmit={handleSubmit} className={styles.form}>
             {/* שדה כותרת */}
             <TextField
-              label="Title"
+              label="Book Name"
               variant="outlined"
               fullWidth
-              value={title}
-              onChange={(e) => setTitle(e.target.value)}
+              value={bookName}
+              onChange={(e) => setBookName(e.target.value)}
               required
               sx={{
                 "& .MuiOutlinedInput-root": {
