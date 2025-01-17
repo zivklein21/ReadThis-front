@@ -1,10 +1,12 @@
 import React, { useState } from "react";
 import { Button, Typography } from "@mui/material";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import { GoogleLogin, CredentialResponse } from "@react-oauth/google";
-import axios, { AxiosError } from "axios"; 
+import axios, { AxiosError } from "axios";
+
+// Service
 
 // CSS
 import styles from "./Auth.module.css";
@@ -13,6 +15,7 @@ import styles from "./Auth.module.css";
 import readThis from "../../assets/readThis.svg";
 
 const SignUp: React.FC = () => {
+    const navigate = useNavigate();
   const [password, setPassword] = useState("");
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
@@ -20,11 +23,12 @@ const SignUp: React.FC = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [profileImage, setProfileImage] = useState<File | null>(null);
-  const [errorMessage, setErrorMessage] = useState<string>(""); // State for error messages
+  const [errorMessage, setErrorMessage] = useState<string>("");
 
   const handlePasswordToggle = () => setShowPassword(!showPassword);
-  const handleConfirmPasswordToggle = () => setShowConfirmPassword(!showConfirmPassword);
-  
+  const handleConfirmPasswordToggle = () =>
+    setShowConfirmPassword(!showConfirmPassword);
+
   const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files && event.target.files[0]) {
       setProfileImage(event.target.files[0]);
@@ -33,42 +37,49 @@ const SignUp: React.FC = () => {
 
   const handleSignUp = async () => {
     setErrorMessage(""); // Reset error message before new request
-
-    if (!username || !email || !password || !confirmPassword) {
-      setErrorMessage("All fields are required.");
+  
+    if (!username || !email || !password || !confirmPassword || !profileImage) {
+      setErrorMessage("All fields, including the profile image, are required.");
       return;
     }
-
+  
     if (password !== confirmPassword) {
       setErrorMessage("Passwords do not match!");
       return;
     }
-
+  
     try {
       console.log("Sending signup request to backend...");
-
-      const response = await axios.post(
-        "http://localhost:3000/auth/register",
-        { username, email, password },
-        {
-          headers: { "Content-Type": "application/json" },
-          withCredentials: true, // Allows cookies/auth headers if needed
-        }
-      );
-
+  
+      // Create a FormData object
+      const formData = new FormData();
+      formData.append("username", username);
+      formData.append("email", email);
+      formData.append("password", password);
+      formData.append("image", profileImage); // Profile image key must match multer configuration
+  
+      // Send the form data to the backend
+      const response = await axios.post("http://localhost:3000/auth/register", formData, {
+        headers: { "Content-Type": "multipart/form-data" },
+        withCredentials: true, // Include credentials (if needed, like cookies)
+      });
+  
       console.log("Signup success:", response.data);
       setErrorMessage(""); // Clear any existing error message
-      alert("User registered successfully!"); // You can replace this with a success label if needed
-
+      alert("User registered successfully!");
+      navigate("/signin");
     } catch (err) {
       const error = err as AxiosError<{ message?: string }>;
       console.error("Signup error:", error);
-
+  
       if (error.response) {
-        console.error("Server responded with:", error.response.data);
-        setErrorMessage(error.response.data?.message || "Signup failed. Please try again.");
+        setErrorMessage(
+          error.response.data?.message || "Signup failed. Please try again."
+        );
       } else {
-        setErrorMessage("Signup failed: Network error. Please check your connection.");
+        setErrorMessage(
+          "Signup failed: Network error. Please check your connection."
+        );
       }
     }
   };
@@ -88,9 +99,7 @@ const SignUp: React.FC = () => {
         <h2 className={styles.formTitle}>Sign Up</h2>
 
         {errorMessage && (
-          <Typography className={styles.errorLabel}>
-            {errorMessage}
-          </Typography>
+          <Typography className={styles.errorLabel}>{errorMessage}</Typography>
         )}
 
         <input
@@ -133,7 +142,10 @@ const SignUp: React.FC = () => {
             required
             className={styles.passwordInput}
           />
-          <span className={styles.eyeIcon} onClick={handleConfirmPasswordToggle}>
+          <span
+            className={styles.eyeIcon}
+            onClick={handleConfirmPasswordToggle}
+          >
             {showConfirmPassword ? <VisibilityOffIcon /> : <VisibilityIcon />}
           </span>
         </div>
