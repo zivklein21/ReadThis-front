@@ -2,9 +2,10 @@ import React, { useState } from "react";
 import { TextField, Button, Typography, Paper } from "@mui/material";
 import NavBar from "../NavBar/NavBar"; // ייבוא ה-NavBar
 import styles from "./NewPost.module.css"; // ייבוא ה-CSS המודולרי
+import { createPostWithImage } from "../../Utils/post_service";
 
 const CreatePost: React.FC = () => {
-  const [title, setTitle] = useState<string>(""); // כותרת הפוסט
+  const [bookName, setBookName] = useState<string>(""); // כותרת הפוסט
   const [content, setContent] = useState<string>(""); // תוכן הפוסט
   const [image, setImage] = useState<File | null>(null);
 
@@ -15,22 +16,25 @@ const CreatePost: React.FC = () => {
   };
 
   const handleSubmit = (e: React.FormEvent) => {
+    console.log("submit");
     e.preventDefault();
 
     const formData = new FormData();
-    formData.append("title", title);
+    formData.append("Book Name", bookName);
     formData.append("content", content);
     if (image) {
-      formData.append("image", image); // הוספת התמונה לנתונים
+      formData.append("image", image);
     }
 
     console.log("Post submitted:", {
-      title,
+      bookName,
       content,
       image: image ? image.name : null,
     });
 
-    setTitle("");
+    createPostWithImage(content, bookName);
+
+    setBookName("");
     setContent("");
     setImage(null); // איפוס התמונה לאחר השליחה
   };
@@ -55,11 +59,11 @@ const CreatePost: React.FC = () => {
           <form onSubmit={handleSubmit} className={styles.form}>
             {/* שדה כותרת */}
             <TextField
-              label="Title"
+              label="Book Name"
               variant="outlined"
               fullWidth
-              value={title}
-              onChange={(e) => setTitle(e.target.value)}
+              value={bookName}
+              onChange={(e) => setBookName(e.target.value)}
               required
               sx={{
                 "& .MuiOutlinedInput-root": {
