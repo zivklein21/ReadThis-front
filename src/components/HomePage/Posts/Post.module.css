@@ -46,21 +46,30 @@
   margin-top: 10px; /* רווח עליון */
 }
 
-.likeContainer {
+.actionContainer {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 20px;
   margin-top: 10px;
 }
 
-.likeIcon {
-  font-size: 24px; /* גודל האייקון */
-  color: #ccc; /* צבע אפור ללייק לא פעיל */
+.likeContainer,
+.commentContainer {
+  display: flex;
+  align-items: center;
+  gap: 5px;
   cursor: pointer;
+}
+
+.likeIcon,
+.commentIcon {
+  font-size: 24px; /* גודל האייקונים */
+  color: #ccc; /* צבע אפור */
   transition: color 0.3s ease, transform 0.3s ease;
 }
 
-.likeIcon:hover {
+.likeIcon:hover,
+.commentIcon:hover {
   transform: scale(1.2); /* הגדלה בעת מעבר עכבר */
 }
 
@@ -68,7 +77,8 @@
   color: #e0245e; /* צבע אדום ללייק פעיל */
 }
 
-.likeCount {
+.likeCount,
+.commentCount {
   font-size: 16px;
   color: #555;
 }
