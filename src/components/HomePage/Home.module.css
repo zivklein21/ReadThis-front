@@ -1,8 +1,17 @@
+html,
+body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  background-color: #f9f9f9;
+  overflow-x: hidden;
+}
+
 .container {
   display: flex;
   flex-direction: column;
   width: 100%;
-  height: 100vh;
+  min-height: 100vh;
   background-color: #f9f9f9;
   margin: 0;
   padding: 0;
@@ -19,9 +28,11 @@
 }
 
 .postsContainer {
+  overflow: visible;
   display: flex;
   flex-direction: column;
   gap: 20px;
+  min-height: 100%; /* גובה מסך מלא */
 }
 
 .noPosts {
