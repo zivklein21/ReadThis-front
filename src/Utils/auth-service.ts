@@ -16,6 +16,8 @@ export const signIn = async (username: string, password: string) => {
     // Store token in localStorage for future authenticated requests
     localStorage.setItem("accessToken", response.data.accessToken);
     localStorage.setItem("refreshToken", response.data.refreshToken);
+    localStorage.setItem("userId", response.data._id);
+
 
     return response.data;
   } catch (error) {
