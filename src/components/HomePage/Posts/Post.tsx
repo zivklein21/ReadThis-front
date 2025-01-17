@@ -1,16 +1,21 @@
+import styles from "./Post.module.css";
+import React from "react";
+
 export interface PostProps {
-  id: string;
-  text: string;
-  imagePath: string;
-  usersWhoLiked: string[];
-  createdBy: {
-    _id: string;
-    name: string;
-    image: string;
-  };
-  date: Date;
-  commentsAmount: number;
-  onClick?: () => void;
-  postPage?: boolean;
-  reloadPosts?: () => void;
+  _id: string;
+  content: string;
+  title: string;
+  author: string;
 }
+
+const Post: React.FC<PostProps> = ({ title, content, author }) => {
+  return (
+    <div className={styles.post}>
+      <h3 className={styles.title}>{title}</h3>
+      <p className={styles.content}>{content}</p>
+      <p className={styles.author}>Written by: {author}</p>
+    </div>
+  );
+};
+
+export default Post;

@@ -18,16 +18,14 @@
   padding: 20px;
 }
 
-.sectionTitle {
-  font-size: 20px;
-  color: #d1a0d7;
-  margin-bottom: 10px;
+.postsContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
 }
 
-.description {
-  font-size: 16px;
-  color: #d1a0d7;
-  margin: 0 auto;
-  max-width: 600px;
-  line-height: 1.5;
+.noPosts {
+  text-align: center;
+  font-size: 18px;
+  color: #555;
 }
