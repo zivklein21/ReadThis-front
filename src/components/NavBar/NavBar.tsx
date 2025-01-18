@@ -1,28 +1,33 @@
-import React from "react";
+import { Link , useNavigate} from "react-router-dom";
+import useAuth from "../../Utils/useAuth";
 import styles from "./NavBar.module.css";
+import { FaUser , FaSignOutAlt} from "react-icons/fa";
 import logo from "../../assets/readThis_purple.svg";
-import { FaUser } from "react-icons/fa";
+
 
 const NavBar: React.FC = () => {
-  const isAuthenticated = false;
+  const { isAuthenticated, handleLogout } = useAuth();
+  const navigate = useNavigate();
 
-  const profileClick = () => {
-    if (!isAuthenticated) {
-      window.location.href = "/signin";
-    }
-  };
-
-  const homeClick = () => {
-    window.location.href = "/";
+  const logout = () => {
+    handleLogout();
+    navigate("/signin")
   };
 
   return (
     <nav className={styles.navbar}>
-      <img src={logo} alt="Logo" className={styles.logo} onClick={homeClick} />
-      <h1 className={styles.title} onClick={homeClick}>
-        ReadThis
-      </h1>
-      <FaUser className={styles.userIcon} onClick={profileClick} />
+      <Link to="/">
+        <img src={logo} alt="Logo" className={styles.logo} />
+      </Link>
+      <h1 className={styles.title}>ReadThis</h1>
+      {isAuthenticated && (
+        <>
+          <Link to="/profile">
+            <FaUser className={styles.userIcon} />
+          </Link>
+          <FaSignOutAlt className={styles.logoutIcon} onClick={logout} />
+        </>
+      )}
     </nav>
   );
 };
