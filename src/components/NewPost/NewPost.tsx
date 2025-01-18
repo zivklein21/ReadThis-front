@@ -1,10 +1,12 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { TextField, Button, Typography, Paper } from "@mui/material";
 import NavBar from "../NavBar/NavBar";
 import styles from "./NewPost.module.css"; 
 import axios from "axios";
 
 const CreatePost: React.FC = () => {
+  const navigate = useNavigate();
   const [title, setTitle] = useState<string>(""); 
   const [content, setContent] = useState<string>("");
   const [image, setImage] = useState<File | null>(null);
@@ -46,7 +48,7 @@ const CreatePost: React.FC = () => {
       setTitle("");
       setContent("");
       setImage(null);
-      alert("Post created successfully!");
+      navigate("/");
     } catch (error) {
       console.error("Error submitting post:", error);
       setErrorMessage("Failed to create post. Please try again.");
