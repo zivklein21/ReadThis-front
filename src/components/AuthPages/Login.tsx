@@ -6,19 +6,8 @@ import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import styles from "./Auth.module.css";
 import readThis from "../../assets/readThis.svg";
-<<<<<<< HEAD
-<<<<<<< HEAD
 import { AxiosError } from "axios";
-import { signIn } from "../../Utils/api";
-=======
-
-import { AxiosError } from "axios"; // Import AxiosError
-// Services
-=======
-import { AxiosError } from "axios";
->>>>>>> e07d89d (clean code)
-import { signIn } from "../../Utils/auth-service";
->>>>>>> d5c4dc8 (Connect signin and signup to back:)
+import { signIn } from "../../Utils/api-client";
 
 const SignIn: React.FC = () => {
   const navigate = useNavigate();
@@ -27,54 +16,21 @@ const SignIn: React.FC = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState("");
   const handlePasswordToggle = () => setShowPassword(!showPassword);
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-
-  // Handle sign in with your backend
-  
-
->>>>>>> d5c4dc8 (Connect signin and signup to back:)
-=======
->>>>>>> e07d89d (clean code)
   const handleSignIn = async () => {
     try {
       setError("");
       console.log("Attempting login...");
   
-<<<<<<< HEAD
       const data = await signIn(username, password);
       console.log("Login successful:", data);
     
-<<<<<<< HEAD
       navigate("/");
     } catch (error) {
-=======
-      const data = await signIn(email, password);
-      console.log("Login successful:", data);
-    
-      // Redirect user after login
-      navigate("/");
-    } catch (error) {
-      // Explicitly type the error as an AxiosError
->>>>>>> d5c4dc8 (Connect signin and signup to back:)
-=======
-      navigate("/");
-    } catch (error) {
->>>>>>> e07d89d (clean code)
       const axiosError = error as AxiosError<{ message?: string }>;
   
       console.error("Login failed:", axiosError);
   
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> e07d89d (clean code)
       setError(axiosError.response?.data?.message || "Incorrect Username or password");
-=======
-      // Extract error message safely
-      setError(axiosError.response?.data?.message || "Incorrect email or password");
->>>>>>> d5c4dc8 (Connect signin and signup to back:)
     }
   };
 
