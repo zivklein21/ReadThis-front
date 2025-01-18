@@ -7,33 +7,57 @@ export interface PostProps {
   content: string;
   title: string;
   author: string;
-  likes: number;
-  comments: string;
+  usersWhoLiked: [];
+  comments: {
+    _id: string;
+    user: {
+      _id: string;
+      name: string;
+      image: string;
+    };
+    text: string;
+  }[];
 }
 
 const Post: React.FC<PostProps> = ({
   title,
   content,
   author,
-  likes,
-  comments,
+  usersWhoLiked = [],
+  comments = [],
 }) => {
-  const [currentLikes, setCurrentLikes] = useState<number>(likes); // מספר הלייקים
+  const [currentLikes, setCurrentLikes] = useState<string[]>(usersWhoLiked); // מספר הלייקים
   const [liked, setLiked] = useState<boolean>(false); // האם המשתמש לחץ לייק
 
+  const [showComments, setShowComments] = useState(false);
+  const [newComment, setNewComment] = useState("");
+
+  console.log(comments);
+
   const handleLike = () => {
-    if (!liked) {
-      setCurrentLikes((prevLikes) => prevLikes + 1); // הוספת לייק
+    if (liked) {
+      // הסרת לייק
+      setCurrentLikes((prevLikes) =>
+        prevLikes.filter((userId) => userId !== "currentUserId")
+      );
     } else {
-      setCurrentLikes((prevLikes) => prevLikes - 1); // ביטול לייק
+      // הוספת לייק
+      setCurrentLikes((prevLikes) => [...prevLikes, "currentUserId"]);
     }
     setLiked(!liked); // שינוי מצב לייק
-    // ניתן להוסיף קריאה לשרת כאן כדי לעדכן לייקים
   };
 
-  const handleCommentClick = () => {
-    console.log(`Navigate to comments for post: ${_id}`);
-    // כאן תבצעי ניווט למסך התגובות
+  const handleCommentToggle = () => {
+    setShowComments(!showComments);
+  };
+
+  const handleAddComment = () => {
+    if (newComment.trim() === "") return;
+
+    // ניתן להוסיף קריאה לשרת כאן
+    console.log("Adding comment:", newComment);
+
+    setNewComment(""); // איפוס שדה התגובה
   };
 
   return (
@@ -47,13 +71,50 @@ const Post: React.FC<PostProps> = ({
             className={`${styles.likeIcon} ${liked ? styles.liked : ""}`}
             onClick={handleLike}
           />
-          <span className={styles.likeCount}>{currentLikes}</span>
+          <span className={styles.likeCount}>{currentLikes.length}</span>
         </div>
-        <div className={styles.commentContainer} onClick={handleCommentClick}>
+
+        <div className={styles.commentContainer} onClick={handleCommentToggle}>
           <FaComment className={styles.commentIcon} />
-          <span className={styles.commentCount}>{comments}</span>
+          <span className={styles.commentCount}>{comments.length}</span>
         </div>
       </div>
+
+      {/* תצוגת תגובות */}
+      {showComments && (
+        <div className={styles.commentsSection}>
+          {comments.length > 0 ? (
+            comments.map((comment) => (
+              <div key={comment._id} className={styles.comment}>
+                <img
+                  src={comment.user.image}
+                  alt={comment.user.name}
+                  className={styles.commentUserImage}
+                />
+                <div>
+                  <p className={styles.commentUserName}>{comment.user.name}</p>
+                  <p className={styles.commentText}>{comment.text}</p>
+                </div>
+              </div>
+            ))
+          ) : (
+            <p>No comments yet</p>
+          )}
+
+          {/* הוספת תגובה */}
+          <div className={styles.addComment}>
+            <textarea
+              value={newComment}
+              onChange={(e) => setNewComment(e.target.value)}
+              placeholder="Write a comment..."
+              className={styles.commentInput}
+            />
+            <button onClick={handleAddComment} className={styles.commentButton}>
+              Add Comment
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

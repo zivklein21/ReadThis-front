@@ -66,6 +66,8 @@ const Home: React.FC = () => {
                   title={post.title}
                   content={post.content}
                   author={post.author}
+                  usersWhoLiked={post.usersWhoLiked || []}
+                  comments={post.comments || []}
                 />
               ))
             : !isLoading &&
