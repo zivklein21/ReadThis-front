@@ -7,6 +7,16 @@ interface PostsResponse {
   content: string;
   title: string;
   author: string;
+  usersWhoLiked: [];
+  comments: {
+    _id: string;
+    user: {
+      _id: string;
+      name: string;
+      image: string;
+    };
+    text: string;
+  }[];
 }
 
 const DEFAULT_POST: PostProps = {
@@ -34,6 +44,7 @@ export const createPostWithImage = async (
 export const getPosts = async () => {
   try {
     const data: PostsResponse[] = (await apiClient.get("/posts")).data;
+    console.log(data);
     return data
       .map((post: PostsResponse) => ({
         ...DEFAULT_POST,
