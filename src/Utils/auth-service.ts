@@ -9,11 +9,10 @@ export const signIn = async (username: string, password: string) => {
       { username, password },
       {
         headers: { "Content-Type": "application/json" },
-        withCredentials: true, // Ensures cookies and authentication headers are sent
+        withCredentials: true,
       }
     );
 
-    // Store token in localStorage for future authenticated requests
     localStorage.setItem("accessToken", response.data.accessToken);
     localStorage.setItem("refreshToken", response.data.refreshToken);
     localStorage.setItem("userId", response.data._id);
@@ -21,7 +20,6 @@ export const signIn = async (username: string, password: string) => {
 
     return response.data;
   } catch (error) {
-    // Properly type error as AxiosError
     const axiosError = error as AxiosError<{ message?: string }>;
 
     console.error("Login error:", axiosError.response?.data || axiosError.message);
