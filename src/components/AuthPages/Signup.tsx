@@ -56,12 +56,7 @@ const SignUp: React.FC = () => {
       });
   
       console.log("Signup success:", response.data);
-<<<<<<< HEAD
       setErrorMessage("");
-=======
-      setErrorMessage(""); // Clear any existing error message
-      alert("User registered successfully!");
->>>>>>> d8f4daf (save user id in local storage)
       navigate("/signin");
     } catch (err) {
       const error = err as AxiosError<{ message?: string }>;
