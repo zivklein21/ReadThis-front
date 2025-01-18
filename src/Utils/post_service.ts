@@ -1,5 +1,5 @@
-import apiClient from "./api";
 import { PostProps } from "../components/HomePage/Posts/Post";
+import apiClient from "./api-client";
 
 interface PostsResponse {
   _id: string;
