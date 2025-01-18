@@ -5,13 +5,7 @@ import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import { GoogleLogin, CredentialResponse } from "@react-oauth/google";
 import axios, { AxiosError } from "axios";
-
-// Service
-
-// CSS
 import styles from "./Auth.module.css";
-
-// Images
 import readThis from "../../assets/readThis.svg";
 
 const SignUp: React.FC = () => {
@@ -36,7 +30,7 @@ const SignUp: React.FC = () => {
   };
 
   const handleSignUp = async () => {
-    setErrorMessage(""); // Reset error message before new request
+    setErrorMessage("");
   
     if (!username || !email || !password || !confirmPassword || !profileImage) {
       setErrorMessage("All fields, including the profile image, are required.");
@@ -50,23 +44,19 @@ const SignUp: React.FC = () => {
   
     try {
       console.log("Sending signup request to backend...");
-  
-      // Create a FormData object
       const formData = new FormData();
       formData.append("username", username);
       formData.append("email", email);
       formData.append("password", password);
-      formData.append("image", profileImage); // Profile image key must match multer configuration
+      formData.append("image", profileImage);
   
-      // Send the form data to the backend
       const response = await axios.post("http://localhost:3000/auth/register", formData, {
         headers: { "Content-Type": "multipart/form-data" },
-        withCredentials: true, // Include credentials (if needed, like cookies)
+        withCredentials: true,
       });
   
       console.log("Signup success:", response.data);
-      setErrorMessage(""); // Clear any existing error message
-      alert("User registered successfully!");
+      setErrorMessage("");
       navigate("/signin");
     } catch (err) {
       const error = err as AxiosError<{ message?: string }>;
