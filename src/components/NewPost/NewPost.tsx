@@ -2,12 +2,13 @@ import React, { useState } from "react";
 import { TextField, Button, Typography, Paper } from "@mui/material";
 import NavBar from "../NavBar/NavBar"; // ייבוא ה-NavBar
 import styles from "./NewPost.module.css"; // ייבוא ה-CSS המודולרי
-import { createPostWithImage } from "../../Utils/post_service";
+import axios from "axios";
 
 const CreatePost: React.FC = () => {
-  const [bookName, setBookName] = useState<string>(""); // כותרת הפוסט
+  const [title, setTitle] = useState<string>(""); // כותרת הפוסט
   const [content, setContent] = useState<string>(""); // תוכן הפוסט
   const [image, setImage] = useState<File | null>(null);
+  const [errorMessage, setErrorMessage] = useState<string>("");
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
@@ -15,28 +16,34 @@ const CreatePost: React.FC = () => {
     }
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
-    console.log("submit");
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-
-    const formData = new FormData();
-    formData.append("Book Name", bookName);
-    formData.append("content", content);
-    if (image) {
-      formData.append("image", image);
+    setErrorMessage(""); // Reset error message
+  
+    if (!title || !content || !image) {
+      setErrorMessage("All fields, including the image, are required.");
+      return;
     }
-
-    console.log("Post submitted:", {
-      bookName,
-      content,
-      image: image ? image.name : null,
-    });
-
-    createPostWithImage(content, bookName);
-
-    setBookName("");
-    setContent("");
-    setImage(null); // איפוס התמונה לאחר השליחה
+  
+    try {
+      const formData = new FormData();
+      formData.append("title", title);
+      formData.append("content", content);
+      formData.append("image", image); // Ensure this key matches the backend
+  
+      const response = await axios.post("http://localhost:3000/posts", formData, {
+        headers: { "Content-Type": "multipart/form-data" },
+      });
+  
+      console.log("Post created successfully:", response.data);
+      setTitle("");
+      setContent("");
+      setImage(null);
+      alert("Post created successfully!");
+    } catch (error) {
+      console.error("Error submitting post:", error);
+      setErrorMessage("Failed to create post. Please try again.");
+    }
   };
 
   return (
@@ -59,11 +66,11 @@ const CreatePost: React.FC = () => {
           <form onSubmit={handleSubmit} className={styles.form}>
             {/* שדה כותרת */}
             <TextField
-              label="Book Name"
+              label="Title"
               variant="outlined"
               fullWidth
-              value={bookName}
-              onChange={(e) => setBookName(e.target.value)}
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
               required
               sx={{
                 "& .MuiOutlinedInput-root": {
@@ -121,8 +128,14 @@ const CreatePost: React.FC = () => {
                 Selected file: {image.name}
               </Typography>
             )}
+            {/* Error message display */}
+            {errorMessage && (
+              <Typography variant="body2" className={styles.errorMessage}>
+                {errorMessage}
+              </Typography>
+            )}
             {/* כפתור שליחה */}
-            <button type="submit" className={styles.button}>
+            <button type="submit" className={styles.button} onClick={handleSubmit}>
               Submit
             </button>
           </form>
