@@ -7,12 +7,16 @@ import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import styles from "./Auth.module.css";
 import readThis from "../../assets/readThis.svg";
 <<<<<<< HEAD
+<<<<<<< HEAD
 import { AxiosError } from "axios";
 import { signIn } from "../../Utils/api";
 =======
 
 import { AxiosError } from "axios"; // Import AxiosError
 // Services
+=======
+import { AxiosError } from "axios";
+>>>>>>> e07d89d (clean code)
 import { signIn } from "../../Utils/auth-service";
 >>>>>>> d5c4dc8 (Connect signin and signup to back:)
 
@@ -24,12 +28,15 @@ const SignIn: React.FC = () => {
   const [error, setError] = useState("");
   const handlePasswordToggle = () => setShowPassword(!showPassword);
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 
   // Handle sign in with your backend
   
 
 >>>>>>> d5c4dc8 (Connect signin and signup to back:)
+=======
+>>>>>>> e07d89d (clean code)
   const handleSignIn = async () => {
     try {
       setError("");
@@ -39,6 +46,7 @@ const SignIn: React.FC = () => {
       const data = await signIn(username, password);
       console.log("Login successful:", data);
     
+<<<<<<< HEAD
       navigate("/");
     } catch (error) {
 =======
@@ -50,11 +58,18 @@ const SignIn: React.FC = () => {
     } catch (error) {
       // Explicitly type the error as an AxiosError
 >>>>>>> d5c4dc8 (Connect signin and signup to back:)
+=======
+      navigate("/");
+    } catch (error) {
+>>>>>>> e07d89d (clean code)
       const axiosError = error as AxiosError<{ message?: string }>;
   
       console.error("Login failed:", axiosError);
   
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> e07d89d (clean code)
       setError(axiosError.response?.data?.message || "Incorrect Username or password");
 =======
       // Extract error message safely
