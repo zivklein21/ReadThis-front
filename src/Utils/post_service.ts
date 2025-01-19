@@ -22,13 +22,6 @@ interface PostsResponse {
   }[];
 }
 
-const DEFAULT_POST: PostProps = {
-  _id: "",
-  title: "Untitled",
-  content: "No content available",
-  author: "Anonymous",
-};
-
 export const createPost = async (
   title: string,
   content: string,
@@ -99,11 +92,10 @@ export const deletePost = async (id: string): Promise<void> => {
 
 export const getPosts = async () => {
   try {
-    const data: PostsResponse[] = (await apiClient.get("/posts")).data;
+    const data: PostsResponse[] = (await api.get("/posts")).data;
     console.log(data);
     return data
       .map((post: PostsResponse) => ({
-        ...DEFAULT_POST,
         ...post,
         id: post._id,
       }))
@@ -117,7 +109,7 @@ export const getPosts = async () => {
 
 export const likePost = async (postId: string): Promise<void> => {
   try {
-    await apiClient.post(`/posts/like/${postId}`);
+    await api.post(`/posts/like/${postId}`);
   } catch (error: any) {
     throw new Error(error.response?.data?.message || "Failed to like the post");
   }
@@ -125,7 +117,7 @@ export const likePost = async (postId: string): Promise<void> => {
 
 export const unlikePost = async (postId: string): Promise<void> => {
   try {
-    await apiClient.post(`/posts/unlike/${postId}`);
+    await api.post(`/posts/unlike/${postId}`);
   } catch (error: any) {
     throw new Error(error.response?.data?.message || "Failed to like the post");
   }

@@ -39,8 +39,21 @@ html, body {
   cursor: pointer;
   transition: transform 0.3s ease;
   margin-left: auto;
+  margin-right: 20px;
 }
 
 .userIcon:hover {
   transform: scale(1.1);
 }
+
+
+.logoutIcon {
+  cursor: pointer;
+  font-size: 1.5rem;
+  color: #555; /* Adjust color as needed */
+}
+
+.logoutIcon:hover {
+  color: #d9534f; /* Change color on hover (e.g., red) */
+}
+
