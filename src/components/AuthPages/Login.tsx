@@ -7,7 +7,7 @@ import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import styles from "./Auth.module.css";
 import readThis from "../../assets/readThis.svg";
 import { AxiosError } from "axios";
-import { signIn } from "../../Utils/api-client";
+import { signIn } from "../../Utils/api";
 
 const SignIn: React.FC = () => {
   const navigate = useNavigate();
