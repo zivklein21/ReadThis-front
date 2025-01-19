@@ -31,8 +31,6 @@ const DEFAULT_POST: PostProps = {
 
 export const createPost = async (
   title: string,
-export const createPostWithImage = async (
-
   content: string,
   postImage: File,
 ) => {
