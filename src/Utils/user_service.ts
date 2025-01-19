@@ -1,13 +1,7 @@
 import { AxiosError } from "axios";
-import { api } from "./api";
+import {api} from "./api";
 
-// Utility function to handle Axios errors
-export const handleAxiosError = (error: unknown): string => {
-  const axiosError = error as AxiosError<{ message?: string }>;
-  return axiosError.response?.data.message || axiosError.message || "An unknown error occurred";
-};
 
-// Add `accessToken` to all requests automatically
 api.interceptors.request.use((config) => {
   const token = localStorage.getItem("accessToken");
   if (token) {
@@ -16,30 +10,7 @@ api.interceptors.request.use((config) => {
   return config;
 });
 
-// Refresh token logic for expired tokens
-api.interceptors.response.use(
-  (response) => response,
-  async (error) => {
-    if (error.response?.status === 401 && error.config && !error.config._retry) {
-      error.config._retry = true;
-      try {
-        await refreshToken();
-        const token = localStorage.getItem("accessToken");
-        if (token) {
-          error.config.headers.Authorization = `Bearer ${token}`;
-        }
-        return api.request(error.config);
-      } catch (refreshError) {
-        console.error("Token refresh failed:", handleAxiosError(refreshError));
-        throw refreshError;
-      }
-    }
-    throw error;
-  }
-);
-
-// Register a new user
-export const register = async (username: string, email: string, password: string, profileImage: File) => {
+export const register = async (username: string, email: string, password: string, profileImage: File ) => {
   try {
     const formData = new FormData();
 
@@ -47,6 +18,7 @@ export const register = async (username: string, email: string, password: string
     formData.append("username", username);
     formData.append("password", password);
     formData.append("image", profileImage);
+
 
     const response = await api.post("/auth/register", formData, {
       headers: {
@@ -57,11 +29,12 @@ export const register = async (username: string, email: string, password: string
 
     return response.data;
   } catch (error) {
-    throw new Error(handleAxiosError(error));
+    const axiosError = error as AxiosError<{ message?: string }>;
+    console.error("Registration error:", axiosError.response?.data || axiosError.message);
+    throw axiosError;
   }
-};
+}
 
-// Sign in a user
 export const signIn = async (username: string, password: string) => {
   try {
     const response = await api.post(
@@ -79,25 +52,21 @@ export const signIn = async (username: string, password: string) => {
 
     return response.data;
   } catch (error) {
-    throw new Error(handleAxiosError(error));
+    const axiosError = error as AxiosError<{ message?: string }>;
+    console.error("Login error:", axiosError.response?.data || axiosError.message);
+    throw axiosError;
   }
 };
 
-// Log out a user
 export const logout = async () => {
-  const refreshToken = localStorage.getItem("refreshToken");
-
-  // Clear tokens from localStorage immediately
-  localStorage.removeItem("accessToken");
-  localStorage.removeItem("refreshToken");
-  localStorage.removeItem("userId");
-
-  if (!refreshToken) {
-    console.warn("No refresh token found. User already logged out.");
-    return;
-  }
-
   try {
+    // Retrieve the refreshToken from localStorage
+    const refreshToken = localStorage.getItem("refreshToken");
+
+    if (!refreshToken) {
+      throw new Error("No refresh token found. Please log in again.");
+    }
+
     const response = await api.post(
       "/auth/logout",
       { refreshToken },
@@ -105,41 +74,36 @@ export const logout = async () => {
         headers: {
           "Content-Type": "application/json",
         },
-        withCredentials: true,
+        withCredentials: true, // Optional if cookies are used
       }
     );
+
+    // Clear tokens from localStorage upon successful logout
+    localStorage.removeItem("accessToken");
+    localStorage.removeItem("refreshToken");
+    localStorage.removeItem("userId");
+
     console.log("Logout successful:", response.data);
     return response.data;
   } catch (error) {
-    console.error("Logout error:", handleAxiosError(error));
-    throw error;
+    const axiosError = error as AxiosError<{ message?: string }>;
+    console.error("Logout error:", axiosError.response?.data || axiosError.message);
+    throw axiosError;
   }
 };
 
-// Refresh the access token
 export const refreshToken = async () => {
   const refreshToken = localStorage.getItem("refreshToken");
   if (!refreshToken) {
     throw new Error("No refresh token found");
   }
 
-  try {
-    const { data } = await api.post(
-      `/auth/refresh`,
-      { refreshToken }, // Send the refresh token in the body
-      {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      }
-    );
+  const { data } = await api.get(`/auth/refresh`, {
+    headers: {
+      Authorization: `Bearer ${refreshToken}`,
+    },
+  });
 
-    // Update tokens in localStorage
-    localStorage.setItem("accessToken", data.accessToken);
-    localStorage.setItem("refreshToken", data.refreshToken);
-
-    return data;
-  } catch (error) {
-    throw new Error(handleAxiosError(error));
-  }
+  localStorage.setItem("accessToken", data.accessToken);
+  localStorage.setItem("refreshToken", data.refreshToken);
 };
