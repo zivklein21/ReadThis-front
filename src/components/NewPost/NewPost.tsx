@@ -18,32 +18,29 @@ const CreatePost: React.FC = () => {
     }
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setErrorMessage("");
-  
-    if (!title || !content || !image) {
-      setErrorMessage("All fields, including the image, are required.");
-      return;
-    }
     
-    const userId = localStorage.getItem("userId");
-    if (!userId) {
-      setErrorMessage("User is not logged in. Please log in and try again.");
+    // Ensure all required fields are filled
+    if (!title || !content || !image) {
+      console.error("All fields are required.");
+      setErrorMessage("All fields required!");
       return;
     }
-
-    try {
-      const result = await createPost(title, content, image);
   
-      console.log("Post created successfully:", result);
-      setTitle("");
-      setContent("");
-      setImage(null);
+    const formData = new FormData();
+    formData.append("title", title);
+    formData.append("content", content);
+    formData.append("owner", localStorage.getItem("userId") || ""); // Get owner from localStorage
+    formData.append("image", image);
+  
+    try {
+      await createPost(formData);
+      console.log("Post created successfully.");
       navigate("/");
     } catch (error) {
       console.error("Error submitting post:", error);
-      setErrorMessage("Failed to create post. Please try again.");
+      setErrorMessage("Error submitting post");
     }
   };
 
@@ -130,7 +127,7 @@ const CreatePost: React.FC = () => {
                 {errorMessage}
               </Typography>
             )}
-            <button type="submit" className={styles.button} onClick={handleSubmit}>
+            <button type="submit" className={styles.button}>
               Submit
             </button>
           </form>

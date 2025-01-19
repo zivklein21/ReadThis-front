@@ -1,6 +1,16 @@
 import axios from "axios";
-import {SERVER_URL} from "./vars";
 
-export const api = axios.create({
-  baseURL: SERVER_URL,
+const api = axios.create({
+  baseURL: "http://localhost:3000/",
 });
+
+// Add token to every request
+api.interceptors.request.use((config) => {
+  const token = localStorage.getItem("accessToken"); // Adjust based on your storage mechanism
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`;
+  }
+  return config;
+});
+
+export default api;
