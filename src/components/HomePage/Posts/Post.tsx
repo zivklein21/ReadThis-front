@@ -1,13 +1,15 @@
 import styles from "./Post.module.css";
 import React, { useState } from "react";
 import { FaHeart, FaComment } from "react-icons/fa";
+import { likePost, unlikePost } from "../../../Utils/post_service";
+import { isAxiosError } from "axios";
 
 export interface PostProps {
   _id: string;
   content: string;
   title: string;
   author: string;
-  usersWhoLiked: [];
+  usersWhoLiked: string[];
   comments: {
     _id: string;
     user: {
@@ -20,6 +22,7 @@ export interface PostProps {
 }
 
 const Post: React.FC<PostProps> = ({
+  _id,
   title,
   content,
   author,
@@ -27,24 +30,40 @@ const Post: React.FC<PostProps> = ({
   comments = [],
 }) => {
   const [currentLikes, setCurrentLikes] = useState<string[]>(usersWhoLiked); // מספר הלייקים
-  const [liked, setLiked] = useState<boolean>(false); // האם המשתמש לחץ לייק
+  const [liked, setLiked] = useState<boolean>(
+    localStorage.getItem("userId")
+      ? usersWhoLiked.includes(localStorage.getItem("userId")!)
+      : false
+  );
 
   const [showComments, setShowComments] = useState(false);
   const [newComment, setNewComment] = useState("");
+  const [open, setOpen] = useState(false);
 
-  console.log(comments);
-
-  const handleLike = () => {
-    if (liked) {
-      // הסרת לייק
-      setCurrentLikes((prevLikes) =>
-        prevLikes.filter((userId) => userId !== "currentUserId")
-      );
-    } else {
-      // הוספת לייק
-      setCurrentLikes((prevLikes) => [...prevLikes, "currentUserId"]);
+  const handleLike = async () => {
+    const userId = localStorage.getItem("userId");
+    if (!userId) {
+      console.error("User not logged in");
+      setOpen(true);
+      return;
     }
-    setLiked(!liked); // שינוי מצב לייק
+
+    try {
+      if (liked) {
+        await unlikePost(_id);
+        setLiked(false);
+        setCurrentLikes((prevLikes) => prevLikes.filter((id) => id !== userId));
+      } else {
+        await likePost(_id);
+        setLiked(true);
+        setCurrentLikes((prevLikes) => [...prevLikes, userId]);
+      }
+    } catch (error) {
+      if (isAxiosError(error) && error.response?.status === 401) {
+        setOpen(true);
+      }
+      console.error("Error updating like status:", error);
+    }
   };
 
   const handleCommentToggle = () => {
