@@ -1,13 +1,16 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import NavBar from "../NavBar/NavBar";
 import styles from "./Home.module.css";
 import Post, { PostProps } from "./Posts/Post";
 import { getPosts } from "../../Utils/post_service";
+import { FaPlus } from "react-icons/fa";
 
 const Home: React.FC = () => {
   const [posts, setPosts] = useState<PostProps[]>([]);
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(true);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchPosts = async () => {
@@ -26,28 +29,9 @@ const Home: React.FC = () => {
     fetchPosts();
   }, []);
 
-  /*
-  const posts: PostProps[] = [
-    {
-      _id: "1",
-      title: "First Post",
-      content: "This is the first post content.",
-      author: "John Doe",
-    },
-    {
-      _id: "2",
-      title: "Second Post",
-      content: "This is the second post content.",
-      author: "Jane Smith",
-    },
-    {
-      _id: "3",
-      title: "Third Post",
-      content: "This is the third post content.",
-      author: "Alice Johnson",
-    },
-  ];
-  */
+  const handleCreatePost = () => {
+    navigate("/newpost"); // ניווט לעמוד יצירת פוסט
+  };
 
   return (
     <div className={styles.container}>
@@ -78,6 +62,11 @@ const Home: React.FC = () => {
               )}
         </div>
       </main>
+
+      {/* Create Post Button */}
+      <button className={styles.createPostButton} onClick={handleCreatePost}>
+        <FaPlus className={styles.plusIcon} />
+      </button>
     </div>
   );
 };
