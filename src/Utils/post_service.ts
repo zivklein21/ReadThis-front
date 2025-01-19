@@ -25,19 +25,12 @@ export interface ICreatePostRequest {
 }
 
 // Create a new post
-export const createPost = async (data: ICreatePostRequest): Promise<IPost> => {
-  const formData = new FormData();
-  formData.append("title", data.title);
-  formData.append("content", data.content);
-  formData.append("owner", data.owner);
-  formData.append("image", data.image);
-
-  const response = await api.post<IPost>(`${SERVER_URL}/posts`, formData, {
+export const createPost = async (formData: FormData) => {
+  const response = await api.post(`${SERVER_URL}/posts`, formData, {
     headers: {
       "Content-Type": "multipart/form-data",
     },
   });
-
   return response.data;
 };
 
@@ -92,7 +85,7 @@ export const fetchAllPosts = async (): Promise<IPost[]> => {
 
 // Fetch a post by ID
 export const fetchPostById = async (postId: string): Promise<IPost> => {
-  const response = await axios.get<IPost>(`${SERVER_URL}/posts/${postId}`, {
+  const response = await api.get<IPost>(`${SERVER_URL}/posts/${postId}`, {
     headers: {
       Authorization: `Bearer ${localStorage.getItem("accessToken")}`, // Include the access token for authorization
     },
