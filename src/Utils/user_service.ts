@@ -1,6 +1,5 @@
 import api from "./api";
-import {SERVER_URL} from "./vars";
-
+import { SERVER_URL } from "./vars";
 
 // Interfaces for API responses
 interface IUser {
@@ -19,16 +18,23 @@ interface IAuthResponse {
 
 // Register a new user
 export const registerUser = async (formData: FormData): Promise<IUser> => {
-  const response = await api.post<IUser>(`${SERVER_URL}/auth/register`, formData, {
-    headers: {
-      "Content-Type": "multipart/form-data",
-    },
-  });
+  const response = await api.post<IUser>(
+    `${SERVER_URL}/auth/register`,
+    formData,
+    {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    }
+  );
   return response.data;
 };
 
 // Login a user
-export const loginUser = async (username: string, password: string): Promise<IAuthResponse> => {
+export const loginUser = async (
+  username: string,
+  password: string
+): Promise<IAuthResponse> => {
   const response = await api.post<IAuthResponse>(`${SERVER_URL}/auth/login`, {
     username,
     password,
@@ -49,7 +55,9 @@ export const refreshTokens = async (): Promise<void> => {
   const refreshToken = localStorage.getItem("refreshToken");
   if (!refreshToken) throw new Error("No refresh token found");
 
-  const response = await api.post(`${SERVER_URL}/auth/refresh`, { refreshToken });
+  const response = await api.post(`${SERVER_URL}/auth/refresh`, {
+    refreshToken,
+  });
   const { accessToken, refreshToken: newRefreshToken } = response.data;
 
   // Save new tokens
