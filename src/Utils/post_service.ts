@@ -22,12 +22,6 @@ interface PostsResponse {
   }[];
 }
 
-const DEFAULT_POST: PostProps = {
-  _id: "",
-  title: "Untitled",
-  content: "No content available",
-  author: "Anonymous",
-};
 
 export const createPost = async (
   title: string,
