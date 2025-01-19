@@ -8,12 +8,17 @@ import SignUp from "./components/AuthPages/Signup";
 import Profile from "./components/ProfilePage/ProfilePage";
 import NewPost from "./components/NewPost/NewPost";
 import useAuth  from "./Utils/useAuth.ts";
+import LoadingSpinner from "./components/LoadingSpinner.tsx";
 
 // CSS
 import styles from "./components/AuthPages/Auth.module.css";
 
 const App: React.FC = () => {
-  const { isAuthenticated } = useAuth();
+  const { isAuthenticated, loading } = useAuth();
+  if (loading) {
+    // Show a loading spinner while checking authentication
+    return <LoadingSpinner />;
+  }
   return (
     <div className={styles.pageContainer}>
       <Router>

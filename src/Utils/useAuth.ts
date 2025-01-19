@@ -1,40 +1,35 @@
 import { useState, useEffect } from "react";
-import { refreshToken, logout } from "../Utils/api-client";
+import { refreshTokens, getAccessToken } from "../Utils/user_service";
 
 const useAuth = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [loading, setLoading] = useState(true); // Add a loading state
 
   useEffect(() => {
-    const token = localStorage.getItem("accessToken");
-    setIsAuthenticated(!!token);
+    const initializeAuth = async () => {
+      try {
+        const accessToken = getAccessToken();
+
+        if (accessToken) {
+          // If an access token exists, assume the user is authenticated for now
+          setIsAuthenticated(true);
+        } else {
+          // Try to refresh the tokens
+          await refreshTokens();
+          setIsAuthenticated(true);
+        }
+      } catch (err) {
+        console.error("User is not authenticated:", err);
+        setIsAuthenticated(false);
+      } finally {
+        setLoading(false); // Auth check is complete
+      }
+    };
+
+    initializeAuth();
   }, []);
 
-  const handleLogin = async () => {
-    // סימולציה של התחברות (כאן תכניסי את הקריאה ל-API של login)
-    localStorage.setItem("accessToken", "fake-token"); // טוקן דוגמה
-    setIsAuthenticated(true);
-  };
-
-  const handleLogout = async () => {
-    try {
-      await logout(); // קריאה ל-API של logout
-      setIsAuthenticated(false); // עדכון מצב האימות
-    } catch (err) {
-      console.error("Logout error:", err);
-    }
-  };
-
-  const refreshUserToken = async () => {
-    try {
-      await refreshToken(); // קריאה ל-API של refreshToken
-      setIsAuthenticated(true); // אם הטוקן חודש, המשתמש מחובר
-    } catch (err) {
-      console.error("Token refresh error:", err);
-      setIsAuthenticated(false);
-    }
-  };
-
-  return { isAuthenticated, handleLogin, handleLogout, refreshUserToken };
+  return { isAuthenticated, loading };
 };
 
 export default useAuth;

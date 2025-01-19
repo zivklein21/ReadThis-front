@@ -7,7 +7,7 @@ import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import styles from "./Auth.module.css";
 import readThis from "../../assets/readThis.svg";
 import { AxiosError } from "axios";
-import { signIn } from "../../Utils/user_service";
+import { loginUser } from "../../Utils/user_service";
 
 const SignIn: React.FC = () => {
   const navigate = useNavigate();
@@ -21,7 +21,7 @@ const SignIn: React.FC = () => {
       setError("");
       console.log("Attempting login...");
   
-      const data = await signIn(username, password);
+      const data = await loginUser(username, password);
       console.log("Login successful:", data);
     
       navigate("/");
