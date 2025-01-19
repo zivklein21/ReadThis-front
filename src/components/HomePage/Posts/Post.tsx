@@ -9,7 +9,7 @@ export interface PostProps {
   _id: string;
   title: string;
   content: string;
-  author: string; // Assuming "owner" is mapped to "author" on the frontend
+  owner: string; // Assuming "owner" is mapped to "author" on the frontend
   usersWhoLiked: string[];
   comments: {
     _id: string;
@@ -26,7 +26,7 @@ const Post: React.FC<PostProps> = ({
   _id,
   title,
   content,
-  author,
+  owner,
   usersWhoLiked = [],
   comments = [],
 }) => {
@@ -86,7 +86,7 @@ const Post: React.FC<PostProps> = ({
       <p className={styles.content}>{content}</p>
 
       {/* Post Author */}
-      <p className={styles.author}>Written by: {author}</p>
+      <p className={styles.author}>Written by: {owner}</p>
 
       {/* Like and Comment Actions */}
       <div className={styles.actionContainer}>

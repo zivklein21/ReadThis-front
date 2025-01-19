@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import NavBar from "../NavBar/NavBar";
 import styles from "./Home.module.css";
 import Post, { PostProps } from "./Posts/Post";
-import { fetchAllPosts } from "../../Utils/post_service";
+import { getAllPosts } from "../../Utils/post_service";
 import { FaPlus } from "react-icons/fa";
 
 // Define the backend IPost structure
@@ -34,14 +34,14 @@ const Home: React.FC = () => {
     const fetchPosts = async () => {
       try {
         setIsLoading(true);
-        const data: IPost[] = await fetchAllPosts(); // Fetch backend posts
+        const data = await getAllPosts(); // Fetch backend posts
 
         // Transform IPost to PostProps
         const transformedPosts: PostProps[] = data.map((post) => ({
           _id: post._id,
           title: post.title,
           content: post.content,
-          author: post.owner, // Map 'owner' to 'author'
+          owner: post.owner, // Map 'owner' to 'author'
           usersWhoLiked: post.usersWhoLiked,
           comments: post.comments,
         }));
@@ -71,22 +71,24 @@ const Home: React.FC = () => {
         <div className={styles.postsContainer}>
           {isLoading && <p>Loading...</p>}
           {error && <p className={styles.error}>Error: {error}</p>}
-          {!isLoading && !error && posts.length > 0 ? (
-            posts.map((post) => (
-              <Post
-                key={post._id}
-                _id={post._id}
-                title={post.title}
-                content={post.content}
-                author={post.author}
-                usersWhoLiked={post.usersWhoLiked}
-                comments={post.comments}
-              />
-            ))
-          ) : (
-            !isLoading &&
-            !error && <p className={styles.noPosts}>No posts available at the moment.</p>
-          )}
+          {!isLoading && !error && posts.length > 0
+            ? posts.map((post) => (
+                <Post
+                  key={post._id}
+                  _id={post._id}
+                  title={post.title}
+                  content={post.content}
+                  owner={post.owner}
+                  usersWhoLiked={post.usersWhoLiked}
+                  comments={post.comments}
+                />
+              ))
+            : !isLoading &&
+              !error && (
+                <p className={styles.noPosts}>
+                  No posts available at the moment.
+                </p>
+              )}
         </div>
       </main>
 

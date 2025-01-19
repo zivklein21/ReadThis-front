@@ -1,32 +1,33 @@
 import api from "./api";
-import { SERVER_URL } from "./vars";
+import { PostProps } from "../components/HomePage/Posts/Post";
 
-
-// Interfaces for API responses
-export interface IPost {
+interface PostsResponse {
   _id: string;
-  title: string;
   content: string;
-  imageUrl: string;
+  title: string;
   owner: string;
-  usersWhoLiked: string[];
-  comments?: {
+  usersWhoLiked: [];
+  comments: {
     _id: string;
-    user: { _id: string; name: string; image: string };
+    user: {
+      _id: string;
+      name: string;
+      image: string;
+    };
     text: string;
   }[];
 }
 
-export interface ICreatePostRequest {
-  title: string;
-  content: string;
-  owner: string;
-  image: File;
-}
+const DEFAULT_POST: PostProps = {
+  _id: "",
+  title: "Untitled",
+  content: "No content available",
+  owner: "Anonymous",
+};
 
 // Create a new post
 export const createPost = async (formData: FormData) => {
-  const response = await api.post(`${SERVER_URL}/posts`, formData, {
+  const response = await api.post(`/posts`, formData, {
     headers: {
       "Content-Type": "multipart/form-data",
     },
@@ -36,12 +37,12 @@ export const createPost = async (formData: FormData) => {
 
 export const likePost = async (postId: string): Promise<void> => {
   try {
-    await api.post(`${SERVER_URL}/posts/like/${postId}`); // ניסיון לעשות לייק
+    await api.post(`/posts/like/${postId}`); // ניסיון לעשות לייק
   } catch (error: any) {
     if (error.response?.status === 401) {
       console.log("Token expired. Refreshing...");
       try {
-        const refreshResponse = await api.post(`${SERVER_URL}/auth/refresh`, {
+        const refreshResponse = await api.post(`/auth/refresh`, {
           refreshToken: localStorage.getItem("refreshToken"),
         });
 
@@ -50,7 +51,7 @@ export const likePost = async (postId: string): Promise<void> => {
         localStorage.setItem("refreshToken", refreshResponse.data.refreshToken);
 
         // ניסיון חוזר לעשות לייק
-        await api.post(`${SERVER_URL}/posts/like/${postId}`);
+        await api.post(`/posts/like/${postId}`);
       } catch (refreshError) {
         console.error("Failed to refresh token:", refreshError);
         // הפניה להתחברות מחדש במקרה של כשל
@@ -62,8 +63,8 @@ export const likePost = async (postId: string): Promise<void> => {
 };
 
 // Unlike a post
-export const unlikePost = async (postId: string): Promise<IPost> => {
-  const response = await api.post<IPost>(`${SERVER_URL}/posts/${postId}/unlike`, null, {
+export const unlikePost = async (postId: string): Promise<void> => {
+  const response = await api.post(`/posts/${postId}/unlike`, null, {
     headers: {
       Authorization: `Bearer ${localStorage.getItem("accessToken")}`, // Include the access token for authorization
     },
@@ -73,19 +74,27 @@ export const unlikePost = async (postId: string): Promise<IPost> => {
 };
 
 // Fetch all posts
-export const fetchAllPosts = async (): Promise<IPost[]> => {
-  const response = await api.get<IPost[]>(`${SERVER_URL}/posts`, {
-    headers: {
-      Authorization: `Bearer ${localStorage.getItem("accessToken")}`, // Include the access token for authorization
-    },
-  });
-
-  return response.data;
+export const getAllPosts = async () => {
+  try {
+    const data: PostsResponse[] = (await api.get("/posts")).data;
+    console.log(data);
+    return data
+      .map((post: PostsResponse) => ({
+        ...DEFAULT_POST,
+        ...post,
+        id: post._id,
+      }))
+      .reverse();
+  } catch (error: any) {
+    throw new Error(
+      error.response?.data?.message || "Failed to fetch posts from the server."
+    );
+  }
 };
 
 // Fetch a post by ID
-export const fetchPostById = async (postId: string): Promise<IPost> => {
-  const response = await api.get<IPost>(`${SERVER_URL}/posts/${postId}`, {
+export const getPostById = async (postId: string): Promise<void> => {
+  const response = await api.get(`/posts/${postId}`, {
     headers: {
       Authorization: `Bearer ${localStorage.getItem("accessToken")}`, // Include the access token for authorization
     },
