@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { TextField, Button, Typography, Paper } from "@mui/material";
 import NavBar from "../NavBar/NavBar";
 import styles from "./NewPost.module.css"; 
-import axios from "axios";
+import { createPost } from "../../Utils/post_service";
 
 const CreatePost: React.FC = () => {
   const navigate = useNavigate();
@@ -34,17 +34,9 @@ const CreatePost: React.FC = () => {
     }
 
     try {
-      const formData = new FormData();
-      formData.append("title", title);
-      formData.append("content", content);
-      formData.append("image", image);
-      formData.append("owner", userId);
+      const result = await createPost(title, content, image);
   
-      const response = await axios.post("http://localhost:3000/posts", formData, {
-        headers: { "Content-Type": "multipart/form-data" },
-      });
-  
-      console.log("Post created successfully:", response.data);
+      console.log("Post created successfully:", result);
       setTitle("");
       setContent("");
       setImage(null);
