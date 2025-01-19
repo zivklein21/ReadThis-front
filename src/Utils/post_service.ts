@@ -1,7 +1,6 @@
 import apiClient from "./api-client";
 import { PostProps } from "../components/HomePage/Posts/Post";
 
-
 interface PostsResponse {
   _id: string;
   content: string;
@@ -56,5 +55,21 @@ export const getPosts = async () => {
     throw new Error(
       error.response?.data?.message || "Failed to fetch posts from the server."
     );
+  }
+};
+
+export const likePost = async (postId: string): Promise<void> => {
+  try {
+    await apiClient.post(`/posts/like/${postId}`);
+  } catch (error: any) {
+    throw new Error(error.response?.data?.message || "Failed to like the post");
+  }
+};
+
+export const unlikePost = async (postId: string): Promise<void> => {
+  try {
+    await apiClient.post(`/posts/unlike/${postId}`);
+  } catch (error: any) {
+    throw new Error(error.response?.data?.message || "Failed to like the post");
   }
 };
