@@ -1,14 +1,15 @@
-import styles from "./Post.module.css";
 import React, { useState } from "react";
 import { FaHeart, FaComment } from "react-icons/fa";
-import { likePost, unlikePost } from "../../../Utils/post_service";
+import { likePost, unlikePost } from "../../../Utils/post_service"; // Adjust import path based on your project structure
 import { isAxiosError } from "axios";
+import styles from "./Post.module.css";
 
+// Define PostProps interface
 export interface PostProps {
   _id: string;
-  content: string;
   title: string;
-  author: string;
+  content: string;
+  author: string; // Assuming "owner" is mapped to "author" on the frontend
   usersWhoLiked: string[];
   comments: {
     _id: string;
@@ -29,23 +30,20 @@ const Post: React.FC<PostProps> = ({
   usersWhoLiked = [],
   comments = [],
 }) => {
-  const [currentLikes, setCurrentLikes] = useState<string[]>(usersWhoLiked); // מספר הלייקים
+  const [currentLikes, setCurrentLikes] = useState<string[]>(usersWhoLiked);
   const [liked, setLiked] = useState<boolean>(
     localStorage.getItem("userId")
       ? usersWhoLiked.includes(localStorage.getItem("userId")!)
       : false
   );
-
   const [showComments, setShowComments] = useState(false);
   const [newComment, setNewComment] = useState("");
-  const [open, setOpen] = useState(false);
 
   const handleLike = async () => {
     const userId = localStorage.getItem("userId");
     if (!userId) {
       console.error("User not logged in");
-      setOpen(true);
-      return;
+      return; // Optionally, show an alert or redirect to login
     }
 
     try {
@@ -60,7 +58,7 @@ const Post: React.FC<PostProps> = ({
       }
     } catch (error) {
       if (isAxiosError(error) && error.response?.status === 401) {
-        setOpen(true);
+        console.error("Unauthorized: Please log in");
       }
       console.error("Error updating like status:", error);
     }
@@ -73,18 +71,26 @@ const Post: React.FC<PostProps> = ({
   const handleAddComment = () => {
     if (newComment.trim() === "") return;
 
-    // ניתן להוסיף קריאה לשרת כאן
+    // Add comment logic (optional: integrate backend comment functionality here)
     console.log("Adding comment:", newComment);
 
-    setNewComment(""); // איפוס שדה התגובה
+    setNewComment(""); // Clear the input field after submitting
   };
 
   return (
     <div className={styles.post}>
+      {/* Post Title */}
       <h3 className={styles.title}>{title}</h3>
+
+      {/* Post Content */}
       <p className={styles.content}>{content}</p>
+
+      {/* Post Author */}
       <p className={styles.author}>Written by: {author}</p>
+
+      {/* Like and Comment Actions */}
       <div className={styles.actionContainer}>
+        {/* Like Section */}
         <div className={styles.likeContainer}>
           <FaHeart
             className={`${styles.likeIcon} ${liked ? styles.liked : ""}`}
@@ -93,15 +99,17 @@ const Post: React.FC<PostProps> = ({
           <span className={styles.likeCount}>{currentLikes.length}</span>
         </div>
 
+        {/* Comment Section */}
         <div className={styles.commentContainer} onClick={handleCommentToggle}>
           <FaComment className={styles.commentIcon} />
           <span className={styles.commentCount}>{comments.length}</span>
         </div>
       </div>
 
-      {/* תצוגת תגובות */}
+      {/* Comments Section */}
       {showComments && (
         <div className={styles.commentsSection}>
+          {/* Display Existing Comments */}
           {comments.length > 0 ? (
             comments.map((comment) => (
               <div key={comment._id} className={styles.comment}>
@@ -120,7 +128,7 @@ const Post: React.FC<PostProps> = ({
             <p>No comments yet</p>
           )}
 
-          {/* הוספת תגובה */}
+          {/* Add Comment Section */}
           <div className={styles.addComment}>
             <textarea
               value={newComment}

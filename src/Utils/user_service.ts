@@ -1,4 +1,4 @@
-import {api} from "./api";
+import api from "./api";
 import {SERVER_URL} from "./vars";
 
 

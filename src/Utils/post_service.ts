@@ -1,124 +1,102 @@
+import api from "./api";
+import { SERVER_URL } from "./vars";
 
-import {api} from "./api";
-import { AxiosError } from "axios";
 
-
-interface PostsResponse {
+// Interfaces for API responses
+export interface IPost {
   _id: string;
-  content: string;
   title: string;
-
+  content: string;
+  imageUrl: string;
   owner: string;
-
-  usersWhoLiked: [];
-  comments: {
+  usersWhoLiked: string[];
+  comments?: {
     _id: string;
-    user: {
-      _id: string;
-      name: string;
-      image: string;
-    };
+    user: { _id: string; name: string; image: string };
     text: string;
   }[];
 }
 
-export const createPost = async (
-  title: string,
-  content: string,
-  postImage: File,
-) => {
-  try {
-    const owner = localStorage.getItem("userId");
-    if (!owner) {
-      throw new Error("User ID not found in localStorage. Please log in again.");
-    }
-    // Create a FormData object for `multipart/form-data`
-    const formData = new FormData();
-    formData.append("title", title);
-    formData.append("content", content);
-    formData.append("owner", owner);
-    formData.append("postImage", postImage); // Ensure this matches the `req.file` field on the back-end
+export interface ICreatePostRequest {
+  title: string;
+  content: string;
+  owner: string;
+  image: File;
+}
 
-    // Send POST request
-    const response = await api.post("/posts", formData, {
-      headers: {
-        "Content-Type": "multipart/form-data",
-      },
-      withCredentials: true, // Optional if authentication cookies are used
-    });
+// Create a new post
+export const createPost = async (data: ICreatePostRequest): Promise<IPost> => {
+  const formData = new FormData();
+  formData.append("title", data.title);
+  formData.append("content", data.content);
+  formData.append("owner", data.owner);
+  formData.append("image", data.image);
 
-    console.log("Post created successfully:", response.data);
-    return response.data; // Return the response data if needed
-  } catch (error) {
-    const axiosError = error as AxiosError<{ message?: string }>;
-    console.error("Error creating post:", axiosError.response?.data || axiosError.message);
-    throw axiosError;
-  }
-};
+  const response = await api.post<IPost>(`${SERVER_URL}/posts`, formData, {
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+  });
 
-export const getAllPosts = async (owner?: string): Promise<PostsResponse[]> => {
-  try {
-    const params = owner ? { owner } : undefined; // Attach query param if owner is provided
-    const response = await api.get<PostsResponse[]>("/posts", { params });
-    return response.data;
-  } catch (error) {
-    const axiosError = error as AxiosError<{ message?: string }>;
-    console.error("Error fetching posts:", axiosError.response?.data || axiosError.message);
-    throw axiosError;
-  }
-};
-
-export const getPostById = async (id: string): Promise<PostsResponse> => {
-  try {
-    const response = await api.get<PostsResponse>(`/posts/${id}`);
-    return response.data;
-  } catch (error) {
-    const axiosError = error as AxiosError<{ message?: string }>;
-    console.error("Error fetching post:", axiosError.response?.data || axiosError.message);
-    throw axiosError;
-  }
-};
-
-export const deletePost = async (id: string): Promise<void> => {
-  try {
-    const response = await api.delete(`/posts/${id}`);
-    console.log("Post deleted successfully:", response.data);
-  } catch (error) {
-    const axiosError = error as AxiosError<{ message?: string }>;
-    console.error("Error deleting post:", axiosError.response?.data || axiosError.message);
-    throw axiosError;
-  }
-};
-
-export const getPosts = async () => {
-  try {
-    const data: PostsResponse[] = (await api.get("/posts")).data;
-    console.log(data);
-    return data
-      .map((post: PostsResponse) => ({
-        ...post,
-        id: post._id,
-      }))
-      .reverse();
-  } catch (error: any) {
-    throw new Error(
-      error.response?.data?.message || "Failed to fetch posts from the server."
-    );
-  }
+  return response.data;
 };
 
 export const likePost = async (postId: string): Promise<void> => {
   try {
-    await api.post(`/posts/like/${postId}`);
+    await api.post(`${SERVER_URL}/posts/like/${postId}`); // ניסיון לעשות לייק
   } catch (error: any) {
-    throw new Error(error.response?.data?.message || "Failed to like the post");
+    if (error.response?.status === 401) {
+      console.log("Token expired. Refreshing...");
+      try {
+        const refreshResponse = await api.post(`${SERVER_URL}/auth/refresh`, {
+          refreshToken: localStorage.getItem("refreshToken"),
+        });
+
+        // עדכון האסימונים החדשים
+        localStorage.setItem("accessToken", refreshResponse.data.accessToken);
+        localStorage.setItem("refreshToken", refreshResponse.data.refreshToken);
+
+        // ניסיון חוזר לעשות לייק
+        await api.post(`${SERVER_URL}/posts/like/${postId}`);
+      } catch (refreshError) {
+        console.error("Failed to refresh token:", refreshError);
+        // הפניה להתחברות מחדש במקרה של כשל
+      }
+    } else {
+      console.error("Failed to like post:", error);
+    }
   }
 };
 
-export const unlikePost = async (postId: string): Promise<void> => {
-  try {
-    await api.post(`/posts/unlike/${postId}`);
-  } catch (error: any) {
-    throw new Error(error.response?.data?.message || "Failed to like the post");
-  }
+// Unlike a post
+export const unlikePost = async (postId: string): Promise<IPost> => {
+  const response = await api.post<IPost>(`${SERVER_URL}/posts/${postId}/unlike`, null, {
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem("accessToken")}`, // Include the access token for authorization
+    },
+  });
+
+  return response.data;
+};
+
+// Fetch all posts
+export const fetchAllPosts = async (): Promise<IPost[]> => {
+  const response = await api.get<IPost[]>(`${SERVER_URL}/posts`, {
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem("accessToken")}`, // Include the access token for authorization
+    },
+  });
+
+  return response.data;
+};
+
+// Fetch a post by ID
+export const fetchPostById = async (postId: string): Promise<IPost> => {
+  const response = await axios.get<IPost>(`${SERVER_URL}/posts/${postId}`, {
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem("accessToken")}`, // Include the access token for authorization
+    },
+  });
+
+  return response.data;
 };
