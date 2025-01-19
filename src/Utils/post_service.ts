@@ -1,11 +1,25 @@
+
 import {api} from "./api";
 import { AxiosError } from "axios";
+
 
 interface PostsResponse {
   _id: string;
   content: string;
   title: string;
+
   owner: string;
+
+  usersWhoLiked: [];
+  comments: {
+    _id: string;
+    user: {
+      _id: string;
+      name: string;
+      image: string;
+    };
+    text: string;
+  }[];
 }
 
 const DEFAULT_POST: PostProps = {
@@ -17,6 +31,8 @@ const DEFAULT_POST: PostProps = {
 
 export const createPost = async (
   title: string,
+export const createPostWithImage = async (
+
   content: string,
   postImage: File,
 ) => {
@@ -80,5 +96,39 @@ export const deletePost = async (id: string): Promise<void> => {
     const axiosError = error as AxiosError<{ message?: string }>;
     console.error("Error deleting post:", axiosError.response?.data || axiosError.message);
     throw axiosError;
+  }
+};
+
+export const getPosts = async () => {
+  try {
+    const data: PostsResponse[] = (await apiClient.get("/posts")).data;
+    console.log(data);
+    return data
+      .map((post: PostsResponse) => ({
+        ...DEFAULT_POST,
+        ...post,
+        id: post._id,
+      }))
+      .reverse();
+  } catch (error: any) {
+    throw new Error(
+      error.response?.data?.message || "Failed to fetch posts from the server."
+    );
+  }
+};
+
+export const likePost = async (postId: string): Promise<void> => {
+  try {
+    await apiClient.post(`/posts/like/${postId}`);
+  } catch (error: any) {
+    throw new Error(error.response?.data?.message || "Failed to like the post");
+  }
+};
+
+export const unlikePost = async (postId: string): Promise<void> => {
+  try {
+    await apiClient.post(`/posts/unlike/${postId}`);
+  } catch (error: any) {
+    throw new Error(error.response?.data?.message || "Failed to like the post");
   }
 };
