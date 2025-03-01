@@ -5,13 +5,17 @@ interface PostsResponse {
   _id: string;
   content: string;
   title: string;
-  owner: string;
+  owner: {
+    _id: "";
+    username: "";
+    image: "";
+  };
   usersWhoLiked: [];
   comments: {
     _id: string;
     user: {
       _id: string;
-      name: string;
+      username: string;
       image: string;
     };
     text: string;
@@ -19,10 +23,16 @@ interface PostsResponse {
 }
 
 const DEFAULT_POST: PostProps = {
-  _id: "",
-  title: "Untitled",
-  content: "No content available",
-  owner: "Anonymous",
+  _id: "default",
+  title: "",
+  content: "",
+  usersWhoLiked: [],
+  owner: {
+    _id: "",
+    username: "",
+    image: "",
+  },
+  comments: [],
 };
 
 // Create a new post
