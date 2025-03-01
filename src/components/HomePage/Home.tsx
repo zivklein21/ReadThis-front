@@ -11,13 +11,17 @@ export interface IPost {
   _id: string;
   title: string;
   content: string;
-  owner: string; // Backend uses 'owner' instead of 'author'
+  owner: {
+    _id: string;
+    username: string;
+    image: string;
+  }; // Backend uses 'owner' instead of 'author'
   usersWhoLiked: string[];
   comments: {
     _id: string;
     user: {
       _id: string;
-      name: string;
+      username: string;
       image: string;
     };
     text: string;
