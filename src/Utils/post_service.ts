@@ -104,11 +104,24 @@ export const getAllPosts = async () => {
 
 // Fetch a post by ID
 export const getPostById = async (postId: string): Promise<void> => {
-  const response = await api.get(`/posts/${postId}`, {
-    headers: {
-      Authorization: `Bearer ${localStorage.getItem("accessToken")}`, // Include the access token for authorization
-    },
-  });
+  const response = await api.get(`/posts/${postId}`);
 
   return response.data;
+};
+
+export const addComment = async (
+  postId: string,
+  text: string
+): Promise<PostsResponse> => {
+  const data = (await api.post(`/posts/comment/${postId}`, { text })).data;
+
+  console.log(data);
+
+  return {
+    ...DEFAULT_POST,
+    ...data,
+    imagePath: data.image,
+    id: data._id,
+    owner: data.owner || DEFAULT_POST.owner, // Add null check here
+  };
 };

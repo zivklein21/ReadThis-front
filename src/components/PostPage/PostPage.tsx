@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import Post, { PostProps } from "../HomePage/Posts/Post";
 import NavBar from "../NavBar/NavBar";
-import { getPostById } from "../../Utils/post_service";
+import { getPostById, addComment } from "../../Utils/post_service";
 import styles from "./PostPage.module.css";
 
 const PostPage: React.FC = () => {
@@ -10,6 +10,7 @@ const PostPage: React.FC = () => {
   const [post, setPost] = useState<PostProps | null>(null);
   const [comment, setComment] = useState("");
   const [error, setError] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     const fetchPost = async () => {
@@ -19,7 +20,6 @@ const PostPage: React.FC = () => {
           return;
         }
         const data = await getPostById(id);
-        console.log(data);
         setPost(data);
       } catch (error) {
         console.error("Error loading post:", error);
@@ -31,24 +31,28 @@ const PostPage: React.FC = () => {
   }, [id]);
 
   const handleCommentSubmit = async () => {
+    if (!id || !comment.trim()) {
+      setError("Comment cannot be empty.");
+      return;
+    }
+
+    setLoading(true);
+    setError(null);
+
     try {
-      if (!id) {
-        console.error("Post ID is missing");
-        return;
-      }
+      await addComment(id, comment);
+      console.log("✅ Comment added. Reloading post...");
 
-      await fetch(`/api/posts/${id}/comments`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ text: comment }),
-      });
-
-      setComment("");
-
+      // טעינה מחדש של הפוסט כדי לקבל תגובות מעודכנות
       const updatedPost = await getPostById(id);
       setPost(updatedPost);
+
+      setComment(""); // איפוס שדה התגובה
     } catch (err) {
       console.error("Error submitting comment:", err);
+      setError("Failed to add comment.");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -60,7 +64,6 @@ const PostPage: React.FC = () => {
       <NavBar />
       <main className={styles.main}>
         <div className={styles.postPageContainer}>
-          {/* הסרנו את ה-postWrapper ושמנו רק את הפוסט עצמו */}
           <Post
             _id={post._id}
             title={post.title}
@@ -99,8 +102,9 @@ const PostPage: React.FC = () => {
             <button
               onClick={handleCommentSubmit}
               className={styles.commentButton}
+              disabled={loading}
             >
-              Submit Comment
+              {loading ? "Submitting..." : "Submit Comment"}
             </button>
           </div>
         </div>
