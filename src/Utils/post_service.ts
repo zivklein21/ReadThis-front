@@ -74,12 +74,7 @@ export const likePost = async (postId: string): Promise<void> => {
 
 // Unlike a post
 export const unlikePost = async (postId: string): Promise<void> => {
-  const response = await api.post(`/posts/${postId}/unlike`, null, {
-    headers: {
-      Authorization: `Bearer ${localStorage.getItem("accessToken")}`, // Include the access token for authorization
-    },
-  });
-
+  const response = await api.post(`/posts/unlike/${postId}`);
   return response.data;
 };
 

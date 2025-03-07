@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { FaHeart, FaComment } from "react-icons/fa";
 import { likePost, unlikePost } from "../../../Utils/post_service"; // Adjust import path based on your project structure
 import { isAxiosError } from "axios";
-import { useNavigate } from "react-router-dom"; // ✅ הוספתי שורה זו
+import { useNavigate } from "react-router-dom";
 import styles from "./Post.module.css";
 
 // Define PostProps interface
@@ -35,36 +35,33 @@ const Post: React.FC<PostProps> = ({
   usersWhoLiked = [],
   comments = [],
 }) => {
-  const navigate = useNavigate(); // ✅ הוספתי שורה זו
-  const [currentLikes, setCurrentLikes] = useState<string[]>(usersWhoLiked);
-  const [liked, setLiked] = useState<boolean>(
+  const navigate = useNavigate();
+  const [open, setOpen] = useState(false);
+  const [liked, setLiked] = useState(
     localStorage.getItem("userId")
       ? usersWhoLiked.includes(localStorage.getItem("userId")!)
       : false
   );
 
   const handleLike = async () => {
-    const userId = localStorage.getItem("userId");
-    if (!userId) {
-      console.error("User not logged in");
-      return;
-    }
-
     try {
       if (liked) {
         await unlikePost(_id);
         setLiked(false);
-        setCurrentLikes((prevLikes) => prevLikes.filter((id) => id !== userId));
+        usersWhoLiked.splice(
+          usersWhoLiked.indexOf(localStorage.getItem("userId")!),
+          1
+        );
       } else {
         await likePost(_id);
         setLiked(true);
-        setCurrentLikes((prevLikes) => [...prevLikes, userId]);
+        usersWhoLiked.push(localStorage.getItem("userId")!);
       }
     } catch (error) {
       if (isAxiosError(error) && error.response?.status === 401) {
-        console.error("Unauthorized: Please log in");
+        setOpen(true);
       }
-      console.error("Error updating like status:", error);
+      console.log(error);
     }
   };
 
@@ -91,7 +88,7 @@ const Post: React.FC<PostProps> = ({
             className={`${styles.likeIcon} ${liked ? styles.liked : ""}`}
             onClick={handleLike}
           />
-          <span className={styles.likeCount}>{currentLikes.length}</span>
+          <span className={styles.likeCount}>{usersWhoLiked.length}</span>
         </div>
 
         {/* Comment Section - שינוי כאן כדי להעביר לעמוד הפוסט */}
