@@ -26,6 +26,7 @@ export interface IPost {
     };
     text: string;
   }[];
+  imageUrl: string;
 }
 
 const Home: React.FC = () => {
@@ -48,6 +49,7 @@ const Home: React.FC = () => {
           owner: post.owner, // Map 'owner' to 'author'
           usersWhoLiked: post.usersWhoLiked,
           comments: post.comments,
+          imageUrl: post.imageUrl,
         }));
 
         setPosts(transformedPosts);
@@ -85,6 +87,7 @@ const Home: React.FC = () => {
                   owner={post.owner}
                   usersWhoLiked={post.usersWhoLiked}
                   comments={post.comments}
+                  imageUrl={post.imageUrl}
                 />
               ))
             : !isLoading &&
