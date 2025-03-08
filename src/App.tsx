@@ -9,8 +9,8 @@ import {
 import Home from "./components/HomePage/Home";
 import SignIn from "./components/AuthPages/Login";
 import SignUp from "./components/AuthPages/Signup";
-import Profile from "./components/ProfilePage/ProfilePage";
 import NewPost from "./components/NewPost/NewPost";
+import Profile from "./components/ProfilePage/Profile.tsx";
 import PostPage from "./components/PostPage/PostPage";
 import useAuth from "./Utils/useAuth.ts";
 import LoadingSpinner from "./components/LoadingSpinner.tsx";
@@ -34,10 +34,7 @@ const App: React.FC = () => {
           />
           <Route path="/signin" element={<SignIn />} />
           <Route path="/signup" element={<SignUp />} />
-          <Route
-            path="/profile"
-            element={isAuthenticated ? <Profile /> : <Navigate to="/signin" />}
-          />
+          <Route path="/profile" element={<Profile />} />
           <Route
             path="/newPost"
             element={isAuthenticated ? <NewPost /> : <Navigate to="/signin" />}

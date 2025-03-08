@@ -1,5 +1,6 @@
 import api from "./api";
 import { PostProps } from "../components/HomePage/Posts/Post";
+import { SERVER_URL } from "./vars";
 
 interface PostsResponse {
   _id: string;
@@ -119,4 +120,18 @@ export const addComment = async (
     id: data._id,
     owner: data.owner || DEFAULT_POST.owner, // Add null check here
   };
+};
+
+export const getMyPosts = async () => {
+  const res = await api.get(`${SERVER_URL}/posts/my-posts`);
+  return res.data;
+};
+
+export const updatePost = async (postId: string, formData: FormData) => {
+  const res = await api.put(`${SERVER_URL}/posts/${postId}`, formData);
+  return res.data;
+};
+
+export const deletePost = async (postId: string) => {
+  await api.delete(`${SERVER_URL}/posts/${postId}`);
 };

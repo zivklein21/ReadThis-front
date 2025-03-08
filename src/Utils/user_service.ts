@@ -67,6 +67,20 @@ export const refreshTokens = async (): Promise<void> => {
   localStorage.setItem("refreshToken", newRefreshToken);
 };
 
+// Get user's profile (new addition)
+export const getMyProfile = async (): Promise<IUser> => {
+  const accessToken = getAccessToken();
+  if (!accessToken) throw new Error("No access token found.");
+
+  const response = await api.get<IUser>(`${SERVER_URL}/auth/me`, {
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
+    },
+  });
+
+  return response.data;
+};
+
 // Token Management Utilities
 export const saveTokens = (accessToken: string, refreshToken: string): void => {
   localStorage.setItem("accessToken", accessToken);
@@ -80,4 +94,15 @@ export const clearTokens = (): void => {
 
 export const getAccessToken = (): string | null => {
   return localStorage.getItem("accessToken");
+};
+
+export const updateProfile = async (formData: FormData): Promise<IUser> => {
+  const token = localStorage.getItem("accessToken");
+  const response = await api.put<IUser>(`${SERVER_URL}/auth/profile`, formData, {
+    headers: {
+      "Content-Type": "multipart/form-data",
+      Authorization: `Bearer ${token}`,
+    },
+  });
+  return response.data;
 };
