@@ -4,6 +4,7 @@ import { likePost, unlikePost } from "../../../Utils/post_service"; // Adjust im
 import { isAxiosError } from "axios";
 import { useNavigate } from "react-router-dom";
 import styles from "./Post.module.css";
+import { SERVER_URL, DEFAULT_IMAGE } from "../../../Utils/vars";
 
 // Define PostProps interface
 export interface PostProps {
@@ -15,6 +16,7 @@ export interface PostProps {
     username: string;
     image: string;
   };
+  imageUrl: string;
   usersWhoLiked: string[];
   comments: {
     _id: string;
@@ -34,6 +36,7 @@ const Post: React.FC<PostProps> = ({
   owner,
   usersWhoLiked = [],
   comments = [],
+  imageUrl,
 }) => {
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
@@ -43,6 +46,7 @@ const Post: React.FC<PostProps> = ({
       : false
   );
 
+  console.log("🔍 Checking imageUrl for post:", imageUrl);
   const handleLike = async () => {
     try {
       if (liked) {
@@ -73,6 +77,17 @@ const Post: React.FC<PostProps> = ({
     <div className={styles.post}>
       {/* Post Title */}
       <h3 className={styles.title}>{title}</h3>
+
+      {imageUrl && (
+        <img
+          src={`${SERVER_URL}${imageUrl}`}
+          alt="Post image"
+          className={styles.postImage}
+          onError={(event) => {
+            event.currentTarget.src = DEFAULT_IMAGE; // הצגת תמונת ברירת מחדל במקרה של שגיאה
+          }}
+        />
+      )}
 
       {/* Post Content */}
       <p className={styles.content}>{content}</p>

@@ -71,6 +71,7 @@ const PostPage: React.FC = () => {
             owner={post.owner}
             usersWhoLiked={post.usersWhoLiked}
             comments={post.comments}
+            imageUrl={post.imageUrl}
           />
 
           {/* אזור התגובות */}
