@@ -38,6 +38,9 @@ const DEFAULT_POST: PostProps = {
 
 // Create a new post
 export const createPost = async (formData: FormData) => {
+  if (!formData.get("image")) {
+    formData.delete("image"); // Ensure image field is removed if not provided
+  }
   const response = await api.post(`/posts`, formData, {
     headers: {
       "Content-Type": "multipart/form-data",
@@ -123,8 +126,21 @@ export const addComment = async (
 };
 
 export const getMyPosts = async () => {
-  const res = await api.get(`${SERVER_URL}/posts/my-posts`);
-  return res.data;
+  try {
+    const data: PostsResponse[] = (await api.get("/posts/my-posts")).data;
+    console.log(data);
+    return data
+      .map((post: PostsResponse) => ({
+        ...DEFAULT_POST,
+        ...post,
+        id: post._id,
+      }))
+      .reverse();
+  } catch (error: any) {
+    throw new Error(
+      error.response?.data?.message || "Failed to fetch posts from the server."
+    );
+  }
 };
 
 export const updatePost = async (postId: string, formData: FormData) => {

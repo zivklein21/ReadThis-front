@@ -144,8 +144,9 @@
 
 .postImage {
   width: 100%;
-  max-height: 300px;
-  object-fit: cover;
-  border-radius: 8px;
-  margin-bottom: 10px;
+  height: 300px;  /* Adjust based on your layout */
+  object-fit: contain; /* Ensures full image is visible */
+  border-radius: 10px;
+  display: block;
+  margin: auto;
 }
