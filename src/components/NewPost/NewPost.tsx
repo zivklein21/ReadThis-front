@@ -22,7 +22,7 @@ const CreatePost: React.FC = () => {
     e.preventDefault();
     
     // Ensure all required fields are filled
-    if (!title || !content || !image) {
+    if (!title || !content) {
       console.error("All fields are required.");
       setErrorMessage("All fields required!");
       return;
@@ -32,7 +32,9 @@ const CreatePost: React.FC = () => {
     formData.append("title", title);
     formData.append("content", content);
     formData.append("owner", localStorage.getItem("userId") || ""); // Get owner from localStorage
-    formData.append("image", image);
+    if (image) {
+      formData.append("image", image);
+    }
   
     try {
       await createPost(formData);

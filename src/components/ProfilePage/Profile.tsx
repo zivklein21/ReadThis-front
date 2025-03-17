@@ -4,13 +4,12 @@ import IconButton from "@mui/material/IconButton";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import SaveIcon from "@mui/icons-material/Save";
 import EditIcon from "@mui/icons-material/Edit";
-import DeleteIcon from "@mui/icons-material/Delete";
-import { useNavigate } from "react-router-dom";
+// import { useNavigate } from "react-router-dom";
 import styles from "./Profile.module.css";
 import { getMyProfile, updateProfile } from "../../Utils/user_service";
-import { getMyPosts, deletePost } from "../../Utils/post_service";
+import { getMyPosts } from "../../Utils/post_service";
 import { SERVER_URL } from "../../Utils/vars";
-import Post from "../HomePage/Posts/Post";
+import Post, { PostProps } from "../HomePage/Posts/Post";
 
 interface IUser {
   _id: string;
@@ -19,15 +18,37 @@ interface IUser {
   imageUrl: string;
 }
 
+export interface IPost {
+  _id: string;
+  title: string;
+  content: string;
+  owner: {
+    _id: string;
+    username: string;
+    image: string;
+  }; // Backend uses 'owner' instead of 'author'
+  usersWhoLiked: string[];
+  comments: {
+    _id: string;
+    user: {
+      _id: string;
+      username: string;
+      image: string;
+    };
+    text: string;
+  }[];
+  imageUrl: string;
+}
+
 const Profile: React.FC = () => {
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
   const [user, setUser] = useState<IUser | null>(null);
   const [isEditing, setIsEditing] = useState(false);
   const [newUsername, setNewUsername] = useState("");
   const [newProfileImage, setNewProfileImage] = useState<string | null>(null);
   const [newProfileImageFile, setNewProfileImageFile] = useState<File | null>(null);
-  const [posts, setPosts] = useState<any[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [posts, setPosts] = useState<PostProps[]>([]);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
   const fetchUserData = async () => {
@@ -38,18 +59,34 @@ const Profile: React.FC = () => {
     } catch (err: any) {
       setError(err.message || "Failed to fetch user data.");
     } finally {
-      setLoading(false);
+      setIsLoading(false);
     }
   };
 
   const fetchUserPosts = async () => {
-    try {
-      const myPosts = await getMyPosts();
-      setPosts(myPosts);
-    } catch (err: any) {
-      setError(err.message || "Failed to fetch posts.");
-    }
-  };
+        try {
+          setIsLoading(true);
+          const data = await getMyPosts(); // Fetch backend posts
+  
+          // Transform IPost to PostProps
+          const transformedPosts: PostProps[] = data.map((post) => ({
+            _id: post._id,
+            title: post.title,
+            content: post.content,
+            owner: post.owner, // Map 'owner' to 'author'
+            usersWhoLiked: post.usersWhoLiked,
+            comments: post.comments,
+            imageUrl: post.imageUrl,
+          }));
+  
+          setPosts(transformedPosts);
+          setError(null);
+        } catch (err: any) {
+          setError(err.response?.data?.message || "Failed to load posts.");
+        } finally {
+          setIsLoading(false);
+        }
+      };
 
   useEffect(() => {
     fetchUserData();
@@ -80,17 +117,7 @@ const Profile: React.FC = () => {
     }
   };
 
-
-  const handleEditPost = (postId: string) => navigate(`/editpost/${postId}`);
-
-  const handleDeletePost = async (postId: string) => {
-    if (confirm("Are you sure you want to delete this post?")) {
-      await deletePost(postId);
-      fetchUserPosts();
-    }
-  };
-
-  if (loading) return <div className={styles.loading}>Loading...</div>;
+  if (isLoading) return <div className={styles.loading}>Loading...</div>;
   if (error) return <div className={styles.error}>Error: {error}</div>;
   if (!user) return <div className={styles.error}>No user data found.</div>;
 
@@ -144,44 +171,28 @@ const Profile: React.FC = () => {
       </div>
 
       <div className={styles.postsBox}>
-        <h3 className={styles.sectionTitle}>My Posts</h3>
-        <div className={styles.postsContainer}>
-          {posts.length ? (
-            posts.map((post) => (
-              <div key={post._id} className={styles.postWrapper}>
+          {isLoading && <p>Loading...</p>}
+          {error && <p className={styles.error}>Error: {error}</p>}
+          {!isLoading && !error && posts.length > 0
+            ? posts.map((post) => (
                 <Post
+                  key={post._id}
                   _id={post._id}
                   title={post.title}
                   content={post.content}
                   owner={post.owner}
                   usersWhoLiked={post.usersWhoLiked}
                   comments={post.comments}
+                  imageUrl={post.imageUrl}
                 />
-                <div className={styles.postActions}>
-                  <button
-                    className={styles.editPostBtn}
-                    onClick={() => handleEditPost(post._id)}
-                  >
-                    <IconButton className={styles.editButton}>
-                      <EditIcon />
-                    </IconButton>
-                  </button>
-                  <button
-                    className={styles.deletePostBtn}
-                    onClick={() => handleDeletePost(post._id)}
-                  >
-                    <IconButton className={styles.editButton}>
-                      <DeleteIcon />
-                    </IconButton>
-                  </button>
-                </div>
-              </div>
-            ))
-          ) : (
-            <p className={styles.noPosts}>No posts yet.</p>
-          )}
+              ))
+            : !isLoading &&
+              !error && (
+                <p className={styles.noPosts}>
+                  No posts available at the moment.
+                </p>
+              )}
         </div>
-      </div>
     </div>
   );
 };
