@@ -14,8 +14,6 @@ const PostPage: React.FC = () => {
   const [isEditing, setIsEditing] = useState(false);
   const [editedTitle, setEditedTitle] = useState("");
   const [editedContent, setEditedContent] = useState("");
-  const [selectedImage, setSelectedImage] = useState<File | null>(null);
-  const [previewImage, setPreviewImage] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const userId = localStorage.getItem("userId"); // מזהה המשתמש המחובר
@@ -94,12 +92,6 @@ const PostPage: React.FC = () => {
     setEditedContent(post?.content || "");
   };
 
-  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files && e.target.files[0]) {
-      setSelectedImage(e.target.files[0]);
-    }
-  };
-
   const handleDelete = () => {
     // פונקציה למחיקת הפוסט
   };
@@ -142,21 +134,6 @@ const PostPage: React.FC = () => {
                 post.title
               )
             }
-            imageUrl={
-              isEditing ? (
-                <>
-                  {/* העלאת תמונה */}
-                  <input
-                    type="file"
-                    accept="image/*"
-                    onChange={handleImageChange}
-                    className={styles.fileInput}
-                  />
-                </>
-              ) : (
-                post.imageUrl
-              )
-            }
             content={
               isEditing ? (
                 <textarea
@@ -171,6 +148,7 @@ const PostPage: React.FC = () => {
             owner={post.owner}
             usersWhoLiked={post.usersWhoLiked}
             comments={post.comments}
+            imageUrl={post.imageUrl}
           />
 
           {isEditing && (
