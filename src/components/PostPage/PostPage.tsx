@@ -2,15 +2,21 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import Post, { PostProps } from "../HomePage/Posts/Post";
 import NavBar from "../NavBar/NavBar";
-import { getPostById, addComment } from "../../Utils/post_service";
+import { getPostById, addComment, updatePost } from "../../Utils/post_service";
 import styles from "./PostPage.module.css";
+import { FaEdit, FaTrash } from "react-icons/fa";
+import { image } from "framer-motion/m";
 
 const PostPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const [post, setPost] = useState<PostProps | null>(null);
   const [comment, setComment] = useState("");
+  const [isEditing, setIsEditing] = useState(false);
+  const [editedTitle, setEditedTitle] = useState("");
+  const [editedContent, setEditedContent] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
+  const userId = localStorage.getItem("userId"); // מזהה המשתמש המחובר
 
   useEffect(() => {
     const fetchPost = async () => {
@@ -29,6 +35,10 @@ const PostPage: React.FC = () => {
 
     fetchPost();
   }, [id]);
+
+  useEffect(() => {
+    console.log("📌 isEditing changed:", isEditing);
+  }, [isEditing]);
 
   const handleCommentSubmit = async () => {
     if (!id || !comment.trim()) {
@@ -56,6 +66,36 @@ const PostPage: React.FC = () => {
     }
   };
 
+  const handleEdit = () => {
+    setIsEditing(true);
+    setEditedTitle(post?.title || "");
+    setEditedContent(post?.content || "");
+  };
+
+  const handleSave = async () => {
+    if (!post) return;
+    try {
+      const updatedPost = await updatePost(post._id, {
+        title: editedTitle,
+        content: editedContent,
+      });
+      setPost(updatedPost);
+      setIsEditing(false);
+    } catch (error) {
+      console.error("Error updating post:", error);
+    }
+  };
+
+  const handleCancel = () => {
+    setIsEditing(false);
+    setEditedTitle(post?.title || "");
+    setEditedContent(post?.content || "");
+  };
+
+  const handleDelete = () => {
+    // פונקציה למחיקת הפוסט
+  };
+
   if (error) return <p className={styles.error}>{error}</p>;
   if (!post) return <p>Loading...</p>;
 
@@ -64,15 +104,63 @@ const PostPage: React.FC = () => {
       <NavBar />
       <main className={styles.main}>
         <div className={styles.postPageContainer}>
+          {post.owner._id === userId && (
+            <div
+              className={`${styles.buttonContainer} ${
+                isEditing ? styles.hidden : ""
+              }`}
+            >
+              <button className={styles.editButton} onClick={handleEdit}>
+                <FaEdit />
+              </button>
+              <button className={styles.deleteButton} onClick={handleDelete}>
+                <FaTrash />
+              </button>
+            </div>
+          )}
+
+          {/* קריאה ל-Post כדי לשמור על המבנה הקיים */}
           <Post
             _id={post._id}
-            title={post.title}
-            content={post.content}
+            title={
+              isEditing ? (
+                <input
+                  type="text"
+                  value={editedTitle}
+                  onChange={(e) => setEditedTitle(e.target.value)}
+                  className={styles.input}
+                />
+              ) : (
+                post.title
+              )
+            }
+            content={
+              isEditing ? (
+                <textarea
+                  value={editedContent}
+                  onChange={(e) => setEditedContent(e.target.value)}
+                  className={styles.textarea}
+                />
+              ) : (
+                post.content
+              )
+            }
             owner={post.owner}
             usersWhoLiked={post.usersWhoLiked}
             comments={post.comments}
             imageUrl={post.imageUrl}
           />
+
+          {isEditing && (
+            <div className={styles.editButtons}>
+              <button className={styles.saveButton} onClick={handleSave}>
+                Save
+              </button>
+              <button className={styles.cancelButton} onClick={handleCancel}>
+                Cancel
+              </button>
+            </div>
+          )}
 
           {/* אזור התגובות */}
           <div className={styles.commentSection}>
