@@ -128,7 +128,7 @@ export const getMyPosts = async () => {
 };
 
 export const updatePost = async (postId: string, formData: FormData) => {
-  const res = await api.put(`${SERVER_URL}/posts/${postId}`, formData);
+  const res = await api.put(`/posts/${postId}`, formData);
   return res.data;
 };
 
