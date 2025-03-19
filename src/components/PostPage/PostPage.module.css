@@ -429,3 +429,34 @@ body {
 .buttonContainer.hidden {
   visibility: hidden;
 }
+
+.uploadButton {
+  color: #000 !important; /* טקסט שחור */
+  border: 1px solid #000 !important; /* גבול שחור */
+  font-size: 16px !important; /* גודל טקסט */
+  font-weight: bold !important; /* טקסט מודגש */
+  padding: 10px 20px !important; /* ריווח פנימי */
+  border-radius: 6px !important; /* פינות מעוגלות */
+  transition: background-color 0.3s ease, color 0.3s ease !important; /* אפקט מעבר */
+}
+
+.uploadButton:hover {
+  background-color: #000 !important; /* רקע שחור במעבר עכבר */
+  color: #fff !important; /* טקסט לבן במעבר עכבר */
+}
+
+.imageName {
+  color: #4a4a4a; /* צבע כהה לטקסט */
+  font-weight: bold; /* הדגשה */
+  font-size: 14px; /* גודל טקסט */
+  margin-top: 5px; /* ריווח קל מעל הטקסט */
+  text-align: center; /* ממרכז את שם הקובץ */
+}
+
+.uploadContainer {
+  display: flex;
+  flex-direction: column; /* סידור אנכי */
+  align-items: center; /* ממרכז את כל האלמנטים */
+  justify-content: center; /* יישור אמצעי */
+  gap: 10px; /* רווח בין הכפתור לשם הקובץ */
+}
