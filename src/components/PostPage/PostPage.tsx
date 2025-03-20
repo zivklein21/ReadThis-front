@@ -2,7 +2,12 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import Post, { PostProps } from "../HomePage/Posts/Post";
 import NavBar from "../NavBar/NavBar";
-import { getPostById, addComment, updatePost } from "../../Utils/post_service";
+import {
+  getPostById,
+  addComment,
+  updatePost,
+  deletePost,
+} from "../../Utils/post_service";
 import { Button, Typography } from "@mui/material";
 import styles from "./PostPage.module.css";
 import { FaEdit, FaTrash } from "react-icons/fa";
@@ -109,8 +114,18 @@ const PostPage: React.FC = () => {
     }
   };
 
-  const handleDelete = () => {
-    // פונקציה למחיקת הפוסט
+  const handleDelete = async () => {
+    console.log("delete post----");
+    if (!post) return;
+
+    try {
+      await deletePost(post._id);
+      console.log("✅ Post deleted successfully.");
+      window.location.href = "/"; // ניתוב לעמוד הראשי לאחר מחיקה
+    } catch (error) {
+      console.error("❌ Error deleting post:", error);
+      setError("Failed to delete post.");
+    }
   };
 
   if (error) return <p className={styles.error}>{error}</p>;

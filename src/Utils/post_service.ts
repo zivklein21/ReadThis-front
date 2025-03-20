@@ -133,5 +133,5 @@ export const updatePost = async (postId: string, formData: FormData) => {
 };
 
 export const deletePost = async (postId: string) => {
-  await api.delete(`${SERVER_URL}/posts/${postId}`);
+  await api.delete(`/posts/${postId}`);
 };
