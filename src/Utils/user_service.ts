@@ -106,3 +106,33 @@ export const updateProfile = async (formData: FormData): Promise<IUser> => {
   });
   return response.data;
 };
+
+export interface UserResponse {
+  _id: string;
+  email: string;
+  name: string;
+  image: string;
+  __v: number;
+}
+
+export const getUser = async (): Promise<UserResponse> => {
+  const { data, status } = await api.get('/auth/me');
+  if (status !== 200) {
+      throw new Error('Error getting user');
+  }
+
+  return data;
+};
+
+
+export const googleSignin = async (tokenId: string): Promise<void> => {
+  const { data, status } = await api.post('/auth/google', {
+      credential: tokenId,
+  });
+  if (status !== 200) {
+      throw new Error('Error logging in with Google');
+  }
+  localStorage.setItem('accessToken', data.accessToken);
+  localStorage.setItem('refreshToken', data.refreshToken);
+  localStorage.setItem('userId', (await getUser())._id);
+};
