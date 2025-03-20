@@ -82,11 +82,12 @@ export const unlikePost = async (postId: string): Promise<void> => {
   return response.data;
 };
 
-// Fetch all posts
 export const getAllPosts = async (page = 1, limit = 5) => {
   try {
-    const response = await api.get(`/posts/paged?page=${page}&limit=${limit}`);
-    return response.data; // כולל posts ו- totalPages
+    const response = await api.get(
+      `/posts/paged?page=${page}&limit=${limit}&sort=-createdAt`
+    );
+    return response.data;
   } catch (error: any) {
     throw new Error(
       error.response?.data?.message || "Failed to fetch posts from the server."

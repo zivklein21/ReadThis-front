@@ -37,32 +37,31 @@ const Home: React.FC = () => {
   const [hasMore, setHasMore] = useState(true);
   const navigate = useNavigate();
 
-  useEffect(() => {
-    const fetchPosts = async (pageNumber = 1) => {
-      try {
-        setIsLoading(true);
-        const res = await getAllPosts(pageNumber, 5); // טוען 5 פוסטים בכל פעם
-        // Transform IPost to PostProps
-        if (pageNumber === 1) {
-          setPosts(res.posts); // טעינה ראשונית
-        } else {
-          setPosts((prevPosts) => [...prevPosts, ...res.posts]); // טעינה נוספת
-        }
-
-        setHasMore(pageNumber < res.totalPages); // בדיקה אם יש עוד עמודים לטעון
-      } catch (err) {
-        setError(err.response?.data?.message || "Failed to load posts.");
-      } finally {
-        setIsLoading(false);
+  const fetchPosts = async (pageNumber = 1) => {
+    try {
+      setIsLoading(true);
+      const res = await getAllPosts(pageNumber, 5); // טוען 5 פוסטים בכל פעם
+      if (pageNumber === 1) {
+        setPosts(res.posts); // טעינה ראשונית
+      } else {
+        setPosts((prevPosts) => [...prevPosts, ...res.posts]); // טעינה נוספת
       }
-    };
+      setHasMore(pageNumber < res.totalPages);
+    } catch (err) {
+      setError(err.response?.data?.message || "Failed to load posts.");
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
+  useEffect(() => {
     fetchPosts();
   }, []);
 
   const loadMore = () => {
-    setPage((prev) => prev + 1);
-    fetchPosts(page + 1);
+    const nextPage = page + 1;
+    setPage(nextPage);
+    fetchPosts(nextPage);
   };
 
   const handleCreatePost = () => {
