@@ -2,10 +2,15 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import Post, { PostProps } from "../HomePage/Posts/Post";
 import NavBar from "../NavBar/NavBar";
-import { getPostById, addComment, updatePost } from "../../Utils/post_service";
+import {
+  getPostById,
+  addComment,
+  updatePost,
+  deletePost,
+} from "../../Utils/post_service";
+import { Button, Typography } from "@mui/material";
 import styles from "./PostPage.module.css";
 import { FaEdit, FaTrash } from "react-icons/fa";
-import { image } from "framer-motion/m";
 
 const PostPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -16,7 +21,10 @@ const PostPage: React.FC = () => {
   const [editedContent, setEditedContent] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
+  const [selectedImage, setSelectedImage] = useState<File | null>(null);
   const userId = localStorage.getItem("userId"); // מזהה המשתמש המחובר
+
+  console.log("post-----    ", post);
 
   useEffect(() => {
     const fetchPost = async () => {
@@ -75,10 +83,17 @@ const PostPage: React.FC = () => {
   const handleSave = async () => {
     if (!post) return;
     try {
-      const updatedPost = await updatePost(post._id, {
-        title: editedTitle,
-        content: editedContent,
-      });
+      const formData = new FormData();
+      formData.append("title", editedTitle);
+      formData.append("content", editedContent);
+      if (selectedImage) {
+        formData.append("image", selectedImage);
+      }
+
+      const updatedPost = await updatePost(post._id, formData);
+
+      console.log("updated post---   ", updatedPost);
+
       setPost(updatedPost);
       setIsEditing(false);
     } catch (error) {
@@ -90,10 +105,27 @@ const PostPage: React.FC = () => {
     setIsEditing(false);
     setEditedTitle(post?.title || "");
     setEditedContent(post?.content || "");
+    setSelectedImage(null);
   };
 
-  const handleDelete = () => {
-    // פונקציה למחיקת הפוסט
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files[0]) {
+      setSelectedImage(e.target.files[0]);
+    }
+  };
+
+  const handleDelete = async () => {
+    console.log("delete post----");
+    if (!post) return;
+
+    try {
+      await deletePost(post._id);
+      console.log("✅ Post deleted successfully.");
+      window.location.href = "/"; // ניתוב לעמוד הראשי לאחר מחיקה
+    } catch (error) {
+      console.error("❌ Error deleting post:", error);
+      setError("Failed to delete post.");
+    }
   };
 
   if (error) return <p className={styles.error}>{error}</p>;
@@ -150,6 +182,29 @@ const PostPage: React.FC = () => {
             comments={post.comments}
             imageUrl={post.imageUrl}
           />
+
+          {isEditing && (
+            <div className={styles.uploadContainer}>
+              <Button
+                variant="outlined"
+                component="label"
+                className={styles.uploadButton}
+              >
+                Upload new image
+                <input
+                  type="file"
+                  accept="image/*"
+                  hidden
+                  onChange={handleImageChange}
+                />
+              </Button>
+              {selectedImage && (
+                <Typography variant="body2" className={styles.imageName}>
+                  Selected file: {selectedImage.name}
+                </Typography>
+              )}
+            </div>
+          )}
 
           {isEditing && (
             <div className={styles.editButtons}>
