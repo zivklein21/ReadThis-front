@@ -1,13 +1,13 @@
 // React + Packages
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { GoogleLogin, CredentialResponse } from "@react-oauth/google";
+import { GoogleLogin } from "@react-oauth/google";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import styles from "./Auth.module.css";
 import readThis from "../../assets/readThis.svg";
 import { AxiosError } from "axios";
-import { loginUser } from "../../Utils/user_service";
+import { loginUser, googleSignin } from "../../Utils/user_service";
 
 
 const SignIn: React.FC = () => {
@@ -35,12 +35,19 @@ const SignIn: React.FC = () => {
     }
   };
 
-  const googleResponseMessage = (credentialResponse: CredentialResponse) => {
-    console.log("Google sign in response", credentialResponse);
+  const handleGoogleLogin = async (response: any) => {
+    try {
+      const userData = await googleSignin(response.credential);
+      console.log("Google Login Success:", userData);
+      navigate("/");
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   const googleErrorMessage = () => {
-    console.log("Google sign in error");
+    console.log("Google sign-in error");
+    setError("Google sign-in failed.");
   };
 
   return (
@@ -80,8 +87,7 @@ const SignIn: React.FC = () => {
         </button>
 
         <GoogleLogin
-          onSuccess={googleResponseMessage}
-          onError={googleErrorMessage}
+          onSuccess={handleGoogleLogin} onError={googleErrorMessage}
         />
 
         <p className={styles.text}>
