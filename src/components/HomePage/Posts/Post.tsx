@@ -1,10 +1,13 @@
 import React, { useState } from "react";
-import { FaHeart, FaComment } from "react-icons/fa";
+import { FaHeart, FaComment, FaStar } from "react-icons/fa";
 import { likePost, unlikePost } from "../../../Utils/post_service"; // Adjust import path based on your project structure
 import { isAxiosError } from "axios";
 import { useNavigate } from "react-router-dom";
 import styles from "./Post.module.css";
 import { SERVER_URL, DEFAULT_IMAGE } from "../../../Utils/vars";
+import BookRecommendationsPopup from "../../BookRecommend/BookRecommendation";
+
+
 
 // Define PostProps interface
 export interface PostProps {
@@ -46,7 +49,9 @@ const Post: React.FC<PostProps> = ({
       : false
   );
 
-  console.log("🔍 Checking imageUrl for post:", imageUrl);
+  const [recommendPopup, setRecommendPopup] = useState(false);
+
+
   const handleLike = async () => {
     try {
       if (liked) {
@@ -113,7 +118,13 @@ const Post: React.FC<PostProps> = ({
           <FaComment className={styles.commentIcon} />
           <span className={styles.commentCount}>{comments.length}</span>
         </div>
+        <div className={styles.commentContainer} onClick={() => setRecommendPopup(!recommendPopup)}>
+          {" "}
+          {/* ✅ הוספתי שינוי כאן */}
+          <FaStar className="recommendIcon"/>
+        </div>
       </div>
+      {recommendPopup && <BookRecommendationsPopup bookTitle={title} onClose={() => setRecommendPopup(false)} />}
     </div>
   );
 };
