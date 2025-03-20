@@ -33,28 +33,24 @@ const Home: React.FC = () => {
   const [posts, setPosts] = useState<PostProps[]>([]);
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [page, setPage] = useState(1);
+  const [hasMore, setHasMore] = useState(true);
   const navigate = useNavigate();
 
   useEffect(() => {
-    const fetchPosts = async () => {
+    const fetchPosts = async (pageNumber = 1) => {
       try {
         setIsLoading(true);
-        const data = await getAllPosts(); // Fetch backend posts
-
+        const res = await getAllPosts(pageNumber, 5); // טוען 5 פוסטים בכל פעם
         // Transform IPost to PostProps
-        const transformedPosts: PostProps[] = data.map((post) => ({
-          _id: post._id,
-          title: post.title,
-          content: post.content,
-          owner: post.owner, // Map 'owner' to 'author'
-          usersWhoLiked: post.usersWhoLiked,
-          comments: post.comments,
-          imageUrl: post.imageUrl,
-        }));
+        if (pageNumber === 1) {
+          setPosts(res.posts); // טעינה ראשונית
+        } else {
+          setPosts((prevPosts) => [...prevPosts, ...res.posts]); // טעינה נוספת
+        }
 
-        setPosts(transformedPosts);
-        setError(null);
-      } catch (err: any) {
+        setHasMore(pageNumber < res.totalPages); // בדיקה אם יש עוד עמודים לטעון
+      } catch (err) {
         setError(err.response?.data?.message || "Failed to load posts.");
       } finally {
         setIsLoading(false);
@@ -63,6 +59,11 @@ const Home: React.FC = () => {
 
     fetchPosts();
   }, []);
+
+  const loadMore = () => {
+    setPage((prev) => prev + 1);
+    fetchPosts(page + 1);
+  };
 
   const handleCreatePost = () => {
     navigate("/newpost"); // Navigate to the "Create New Post" page
@@ -77,7 +78,7 @@ const Home: React.FC = () => {
         <div className={styles.postsContainer}>
           {isLoading && <p>Loading...</p>}
           {error && <p className={styles.error}>Error: {error}</p>}
-          {!isLoading && !error && posts.length > 0
+          {posts.length > 0
             ? posts.map((post) => (
                 <Post
                   key={post._id}
@@ -91,12 +92,14 @@ const Home: React.FC = () => {
                 />
               ))
             : !isLoading &&
-              !error && (
-                <p className={styles.noPosts}>
-                  No posts available at the moment.
-                </p>
-              )}
+              !error && <p className={styles.noPosts}>No posts available.</p>}
         </div>
+
+        {hasMore && !isLoading && (
+          <button onClick={loadMore} className={styles.loadMoreButton}>
+            Load More
+          </button>
+        )}
       </main>
 
       {/* Create Post Button */}

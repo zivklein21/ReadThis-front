@@ -83,17 +83,10 @@ export const unlikePost = async (postId: string): Promise<void> => {
 };
 
 // Fetch all posts
-export const getAllPosts = async () => {
+export const getAllPosts = async (page = 1, limit = 5) => {
   try {
-    const data: PostsResponse[] = (await api.get("/posts")).data;
-    console.log(data);
-    return data
-      .map((post: PostsResponse) => ({
-        ...DEFAULT_POST,
-        ...post,
-        id: post._id,
-      }))
-      .reverse();
+    const response = await api.get(`/posts/paged?page=${page}&limit=${limit}`);
+    return response.data; // כולל posts ו- totalPages
   } catch (error: any) {
     throw new Error(
       error.response?.data?.message || "Failed to fetch posts from the server."
