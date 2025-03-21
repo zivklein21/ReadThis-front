@@ -51,7 +51,7 @@ export const createPost = async (formData: FormData) => {
 
 export const likePost = async (postId: string): Promise<void> => {
   try {
-    await api.post(`/posts/like/${postId}`); // ניסיון לעשות לייק
+    await api.post(`/posts/like/${postId}`);
   } catch (error: any) {
     if (error.response?.status === 401) {
       console.log("Token expired. Refreshing...");
@@ -60,15 +60,12 @@ export const likePost = async (postId: string): Promise<void> => {
           refreshToken: localStorage.getItem("refreshToken"),
         });
 
-        // עדכון האסימונים החדשים
         localStorage.setItem("accessToken", refreshResponse.data.accessToken);
         localStorage.setItem("refreshToken", refreshResponse.data.refreshToken);
 
-        // ניסיון חוזר לעשות לייק
         await api.post(`/posts/like/${postId}`);
       } catch (refreshError) {
         console.error("Failed to refresh token:", refreshError);
-        // הפניה להתחברות מחדש במקרה של כשל
       }
     } else {
       console.error("Failed to like post:", error);

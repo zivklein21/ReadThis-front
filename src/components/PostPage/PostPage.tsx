@@ -22,7 +22,7 @@ const PostPage: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const [selectedImage, setSelectedImage] = useState<File | null>(null);
-  const userId = localStorage.getItem("userId"); // מזהה המשתמש המחובר
+  const userId = localStorage.getItem("userId");
 
   console.log("post-----    ", post);
 
@@ -61,11 +61,10 @@ const PostPage: React.FC = () => {
       await addComment(id, comment);
       console.log("✅ Comment added. Reloading post...");
 
-      // טעינה מחדש של הפוסט כדי לקבל תגובות מעודכנות
       const updatedPost = await getPostById(id);
       setPost(updatedPost);
 
-      setComment(""); // איפוס שדה התגובה
+      setComment("");
     } catch (err) {
       console.error("Error submitting comment:", err);
       setError("Failed to add comment.");
@@ -121,7 +120,7 @@ const PostPage: React.FC = () => {
     try {
       await deletePost(post._id);
       console.log("✅ Post deleted successfully.");
-      window.location.href = "/"; // ניתוב לעמוד הראשי לאחר מחיקה
+      window.location.href = "/";
     } catch (error) {
       console.error("❌ Error deleting post:", error);
       setError("Failed to delete post.");
@@ -151,7 +150,6 @@ const PostPage: React.FC = () => {
             </div>
           )}
 
-          {/* קריאה ל-Post כדי לשמור על המבנה הקיים */}
           <Post
             _id={post._id}
             title={
@@ -217,7 +215,7 @@ const PostPage: React.FC = () => {
             </div>
           )}
 
-          {/* אזור התגובות */}
+          {/* comments */}
           <div className={styles.commentSection}>
             <h3 className={styles.commentTitle}>Comments</h3>
             {post.comments.length > 0 ? (

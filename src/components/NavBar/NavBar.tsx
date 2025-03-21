@@ -1,9 +1,8 @@
-import { Link , useNavigate} from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import styles from "./NavBar.module.css";
-import { FaUser , FaSignOutAlt} from "react-icons/fa";
+import { FaUser, FaSignOutAlt } from "react-icons/fa";
 import logo from "../../assets/readThis_purple.svg";
 import { logoutUser } from "../../Utils/user_service";
-
 
 const NavBar: React.FC = () => {
   const navigate = useNavigate();
@@ -24,13 +23,15 @@ const NavBar: React.FC = () => {
       <Link to="/">
         <img src={logo} alt="Logo" className={styles.logo} />
       </Link>
-      <h1 className={styles.title}>ReadThis</h1>
-        <>
-          <Link to="/profile">
-            <FaUser className={styles.userIcon} />
-          </Link>
-          <FaSignOutAlt className={styles.logoutIcon} onClick={handleLogout} />
-        </>
+      <Link to="/" className={styles.title}>
+        <h1>ReadThis</h1>
+      </Link>
+      <>
+        <Link to="/profile">
+          <FaUser className={styles.userIcon} />
+        </Link>
+        <FaSignOutAlt className={styles.logoutIcon} onClick={handleLogout} />
+      </>
     </nav>
   );
 };

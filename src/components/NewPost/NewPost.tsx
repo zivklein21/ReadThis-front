@@ -2,12 +2,12 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { TextField, Button, Typography, Paper } from "@mui/material";
 import NavBar from "../NavBar/NavBar";
-import styles from "./NewPost.module.css"; 
+import styles from "./NewPost.module.css";
 import { createPost } from "../../Utils/post_service";
 
 const CreatePost: React.FC = () => {
   const navigate = useNavigate();
-  const [title, setTitle] = useState<string>(""); 
+  const [title, setTitle] = useState<string>("");
   const [content, setContent] = useState<string>("");
   const [image, setImage] = useState<File | null>(null);
   const [errorMessage, setErrorMessage] = useState<string>("");
@@ -20,14 +20,14 @@ const CreatePost: React.FC = () => {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    
+
     // Ensure all required fields are filled
     if (!title || !content) {
       console.error("All fields are required.");
       setErrorMessage("All fields required!");
       return;
     }
-  
+
     const formData = new FormData();
     formData.append("title", title);
     formData.append("content", content);
@@ -35,7 +35,7 @@ const CreatePost: React.FC = () => {
     if (image) {
       formData.append("image", image);
     }
-  
+
     try {
       await createPost(formData);
       console.log("Post created successfully.");

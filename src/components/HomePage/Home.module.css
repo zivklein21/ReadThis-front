@@ -15,7 +15,7 @@ body {
   background-color: #f9f9f9;
   margin: 0;
   padding: 0;
-  padding-top: 80px; /* דוחף את התוכן כלפי מטה כך שהוא לא יוסתר על ידי ה-NavBar */
+  padding-top: 80px;
 }
 
 .main {
@@ -33,7 +33,7 @@ body {
   display: flex;
   flex-direction: column;
   gap: 20px;
-  min-height: 100%; /* גובה מסך מלא */
+  min-height: 100%;
 }
 
 .noPosts {
@@ -43,27 +43,27 @@ body {
 }
 
 .createPostButton {
-  position: fixed; /* ממקם את הכפתור ביחס לחלון */
-  bottom: 20px; /* מרחק מהתחתית */
-  left: 20px; /* מרחק מהצד השמאלי */
-  width: 60px; /* גודל הכפתור */
-  height: 60px; /* גובה הכפתור */
-  border-radius: 50%; /* עיגול מושלם */
-  background-color: #d1a0d7; /* צבע רקע */
-  color: white; /* צבע האייקון */
-  border: none; /* אין מסגרת */
-  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); /* צל לכפתור */
-  display: flex; /* למרכז את האייקון */
-  align-items: center; /* מרכז אנכי */
-  justify-content: center; /* מרכז אופקי */
-  cursor: pointer; /* הופך לסמן יד */
-  transition: background-color 0.3s ease; /* אפקט מעבר */
+  position: fixed;
+  bottom: 20px;
+  left: 20px;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background-color: #d1a0d7;
+  color: white;
+  border: none;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
 }
 
 .createPostButton:hover {
-  background-color: #c08ac7; /* צבע רקע במעבר עכבר */
+  background-color: #c08ac7;
 }
 
 .plusIcon {
-  font-size: 24px; /* גודל האייקון */
+  font-size: 24px;
 }

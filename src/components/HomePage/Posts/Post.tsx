@@ -1,13 +1,11 @@
 import React, { useState } from "react";
 import { FaHeart, FaComment, FaStar } from "react-icons/fa";
-import { likePost, unlikePost } from "../../../Utils/post_service"; // Adjust import path based on your project structure
+import { likePost, unlikePost } from "../../../Utils/post_service";
 import { isAxiosError } from "axios";
 import { useNavigate } from "react-router-dom";
 import styles from "./Post.module.css";
 import { SERVER_URL, DEFAULT_IMAGE } from "../../../Utils/vars";
 import BookRecommendationsPopup from "../../BookRecommend/BookRecommendation";
-
-
 
 // Define PostProps interface
 export interface PostProps {
@@ -51,7 +49,6 @@ const Post: React.FC<PostProps> = ({
 
   const [recommendPopup, setRecommendPopup] = useState(false);
 
-
   const handleLike = async () => {
     try {
       if (liked) {
@@ -75,13 +72,15 @@ const Post: React.FC<PostProps> = ({
   };
 
   const handleViewPost = () => {
-    navigate(`/post/${_id}`); // ✅ הוספתי שורה זו
+    navigate(`/post/${_id}`);
   };
 
   return (
     <div className={styles.post}>
       {/* Post Title */}
-      <h3 className={styles.title}>{title}</h3>
+      <h3 className={styles.title} onClick={handleViewPost}>
+        {title}
+      </h3>
 
       {imageUrl && (
         <img
@@ -89,7 +88,7 @@ const Post: React.FC<PostProps> = ({
           alt="Post image"
           className={styles.postImage}
           onError={(event) => {
-            event.currentTarget.src = DEFAULT_IMAGE; // הצגת תמונת ברירת מחדל במקרה של שגיאה
+            event.currentTarget.src = DEFAULT_IMAGE;
           }}
         />
       )}
@@ -111,20 +110,26 @@ const Post: React.FC<PostProps> = ({
           <span className={styles.likeCount}>{usersWhoLiked.length}</span>
         </div>
 
-        {/* Comment Section - שינוי כאן כדי להעביר לעמוד הפוסט */}
+        {/* Comment Section - */}
         <div className={styles.commentContainer} onClick={handleViewPost}>
           {" "}
-          {/* ✅ הוספתי שינוי כאן */}
           <FaComment className={styles.commentIcon} />
           <span className={styles.commentCount}>{comments.length}</span>
         </div>
-        <div className={styles.commentContainer} onClick={() => setRecommendPopup(!recommendPopup)}>
+        <div
+          className={styles.commentContainer}
+          onClick={() => setRecommendPopup(!recommendPopup)}
+        >
           {" "}
-          {/* ✅ הוספתי שינוי כאן */}
-          <FaStar className="recommendIcon"/>
+          <FaStar className="recommendIcon" />
         </div>
       </div>
-      {recommendPopup && <BookRecommendationsPopup bookTitle={title} onClose={() => setRecommendPopup(false)} />}
+      {recommendPopup && (
+        <BookRecommendationsPopup
+          bookTitle={title}
+          onClose={() => setRecommendPopup(false)}
+        />
+      )}
     </div>
   );
 };
