@@ -17,7 +17,6 @@ body {
   padding: 0;
 }
 
-/* עיצוב כללי לעמוד הפוסט */
 .postPageContainer {
   display: flex;
   flex-direction: column;
@@ -26,10 +25,9 @@ body {
   width: 100%;
   min-height: 100vh;
   background-color: #f4f4f4;
-  padding-top: 70px; /* ❌ הסרנו את הרווח כדי שהתוכן יהיה צמוד ל-Navbar */
+  padding-top: 70px;
 }
 
-/* עיצוב הפוסט עצמו */
 .postWrapper {
   width: 50%;
   max-width: 800px;
@@ -37,14 +35,13 @@ body {
   padding: 20px;
   border-radius: 12px;
   box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.1);
-  margin: 0 auto; /* ✅ הפוסט ממורכז ואין רווח מיותר */
+  margin: 0 auto;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
 }
 
-/* אזור התגובות */
 .commentSection {
   width: 50%;
   max-width: 800px;
@@ -55,10 +52,9 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-top: 15px; /* ✅ ווידוא שהתגובות לא צמודות לפוסט */
+  margin-top: 15px;
 }
 
-/* כותרת של אזור התגובות */
 .commentTitle {
   font-size: 20px;
   font-weight: bold;
@@ -66,7 +62,6 @@ body {
   margin-bottom: 10px;
 }
 
-/* רשימת התגובות */
 .commentList {
   width: 100%;
   display: flex;
@@ -77,7 +72,6 @@ body {
   padding-right: 5px;
 }
 
-/* עיצוב כל תגובה - גרסה מינימליסטית */
 .comment {
   background: #fafafa;
   padding: 12px;
@@ -88,24 +82,21 @@ body {
   display: flex;
   flex-direction: column;
   gap: 3px;
-  border-left: 4px solid #545454; /* ✅ קו בצד להבלטה */
+  border-left: 4px solid #545454;
 }
 
-/* שם המשתמש של המגיב */
 .commentUser {
   font-weight: 600;
   color: #000000;
   font-size: 14px;
 }
 
-/* אם אין תגובות */
 .noComments {
   font-size: 14px;
   color: #888;
   margin-bottom: 10px;
 }
 
-/* תיבת הקלט להוספת תגובה */
 .commentInput {
   width: 100%;
   min-height: 60px;
@@ -124,7 +115,6 @@ body {
   border: 1px solid #000000;
 }
 
-/* כפתור שליחת תגובה */
 .commentButton {
   margin-top: 12px;
   padding: 10px 18px;
@@ -144,7 +134,7 @@ body {
 
 .buttonContainer {
   display: flex;
-  justify-content: flex-end; /* הכפתורים מיושרים עם הפוסט */
+  justify-content: flex-end;
   gap: 10px;
   width: 100%;
   max-width: 800px;
@@ -162,7 +152,7 @@ body {
   cursor: pointer;
   font-size: 18px;
   transition: background 0.3s ease;
-  display: flex; /* גורם לאייקון להופיע נכון */
+  display: flex;
   align-items: center;
   justify-content: center;
   width: 60px;
@@ -171,7 +161,7 @@ body {
 
 .editButton i,
 .deleteButton i {
-  font-size: 18px; /* גודל האייקון */
+  font-size: 18px;
   color: #ffffff;
 }
 
@@ -206,8 +196,8 @@ body {
 
 .editButtons {
   display: flex;
-  gap: 12px; /* ריווח של 12px בין הכפתורים */
-  margin-top: 10px; /* ריווח מעל הכפתורים */
+  gap: 12px;
+  margin-top: 10px;
 }
 
 html,
@@ -229,7 +219,6 @@ body {
   padding: 0;
 }
 
-/* עיצוב כללי לעמוד הפוסט */
 .postPageContainer {
   display: flex;
   flex-direction: column;
@@ -238,10 +227,9 @@ body {
   width: 100%;
   min-height: 100vh;
   background-color: #f4f4f4;
-  padding-top: 70px; /* ❌ הסרנו את הרווח כדי שהתוכן יהיה צמוד ל-Navbar */
+  padding-top: 70px;
 }
 
-/* עיצוב הפוסט עצמו */
 .postWrapper {
   width: 50%;
   max-width: 800px;
@@ -249,14 +237,13 @@ body {
   padding: 20px;
   border-radius: 12px;
   box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.1);
-  margin: 0 auto; /* ✅ הפוסט ממורכז ואין רווח מיותר */
+  margin: 0 auto;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
 }
 
-/* אזור התגובות */
 .commentSection {
   width: 50%;
   max-width: 800px;
@@ -267,10 +254,9 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-top: 15px; /* ✅ ווידוא שהתגובות לא צמודות לפוסט */
+  margin-top: 15px;
 }
 
-/* כותרת של אזור התגובות */
 .commentTitle {
   font-size: 20px;
   font-weight: bold;
@@ -278,7 +264,6 @@ body {
   margin-bottom: 10px;
 }
 
-/* רשימת התגובות */
 .commentList {
   width: 100%;
   display: flex;
@@ -289,7 +274,6 @@ body {
   padding-right: 5px;
 }
 
-/* עיצוב כל תגובה - גרסה מינימליסטית */
 .comment {
   background: #fafafa;
   padding: 12px;
@@ -300,24 +284,21 @@ body {
   display: flex;
   flex-direction: column;
   gap: 3px;
-  border-left: 4px solid #545454; /* ✅ קו בצד להבלטה */
+  border-left: 4px solid #545454;
 }
 
-/* שם המשתמש של המגיב */
 .commentUser {
   font-weight: 600;
   color: #000000;
   font-size: 14px;
 }
 
-/* אם אין תגובות */
 .noComments {
   font-size: 14px;
   color: #888;
   margin-bottom: 10px;
 }
 
-/* תיבת הקלט להוספת תגובה */
 .commentInput {
   width: 100%;
   min-height: 60px;
@@ -336,7 +317,6 @@ body {
   border: 1px solid #000000;
 }
 
-/* כפתור שליחת תגובה */
 .commentButton {
   margin-top: 12px;
   padding: 10px 18px;
@@ -356,7 +336,7 @@ body {
 
 .buttonContainer {
   display: flex;
-  justify-content: flex-end; /* הכפתורים מיושרים עם הפוסט */
+  justify-content: flex-end;
   gap: 10px;
   width: 100%;
   max-width: 800px;
@@ -378,7 +358,7 @@ body {
   cursor: pointer;
   font-size: 18px;
   transition: background 0.3s ease;
-  display: flex; /* גורם לאייקון להופיע נכון */
+  display: flex;
   align-items: center;
   justify-content: center;
   width: 60px;
@@ -387,7 +367,7 @@ body {
 
 .editButton i,
 .deleteButton i {
-  font-size: 18px; /* גודל האייקון */
+  font-size: 18px;
   color: #ffffff;
 }
 
@@ -422,8 +402,8 @@ body {
 
 .editButtons {
   display: flex;
-  gap: 12px; /* ריווח של 12px בין הכפתורים */
-  margin-top: 10px; /* ריווח מעל הכפתורים */
+  gap: 12px;
+  margin-top: 10px;
 }
 
 .buttonContainer.hidden {
@@ -431,32 +411,32 @@ body {
 }
 
 .uploadButton {
-  color: #000 !important; /* טקסט שחור */
-  border: 1px solid #000 !important; /* גבול שחור */
-  font-size: 16px !important; /* גודל טקסט */
-  font-weight: bold !important; /* טקסט מודגש */
-  padding: 10px 20px !important; /* ריווח פנימי */
-  border-radius: 6px !important; /* פינות מעוגלות */
-  transition: background-color 0.3s ease, color 0.3s ease !important; /* אפקט מעבר */
+  color: #000 !important;
+  border: 1px solid #000 !important;
+  font-size: 16px !important;
+  font-weight: bold !important;
+  padding: 10px 20px !important;
+  border-radius: 6px !important;
+  transition: background-color 0.3s ease, color 0.3s ease !important;
 }
 
 .uploadButton:hover {
-  background-color: #000 !important; /* רקע שחור במעבר עכבר */
-  color: #fff !important; /* טקסט לבן במעבר עכבר */
+  background-color: #000 !important;
+  color: #fff !important;
 }
 
 .imageName {
-  color: #4a4a4a; /* צבע כהה לטקסט */
-  font-weight: bold; /* הדגשה */
-  font-size: 14px; /* גודל טקסט */
-  margin-top: 5px; /* ריווח קל מעל הטקסט */
-  text-align: center; /* ממרכז את שם הקובץ */
+  color: #4a4a4a;
+  font-weight: bold;
+  font-size: 14px;
+  margin-top: 5px;
+  text-align: center;
 }
 
 .uploadContainer {
   display: flex;
-  flex-direction: column; /* סידור אנכי */
-  align-items: center; /* ממרכז את כל האלמנטים */
-  justify-content: center; /* יישור אמצעי */
-  gap: 10px; /* רווח בין הכפתור לשם הקובץ */
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
 }

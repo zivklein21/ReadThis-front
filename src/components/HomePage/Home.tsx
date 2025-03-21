@@ -15,7 +15,7 @@ export interface IPost {
     _id: string;
     username: string;
     image: string;
-  }; // Backend uses 'owner' instead of 'author'
+  };
   usersWhoLiked: string[];
   comments: {
     _id: string;
@@ -40,11 +40,11 @@ const Home: React.FC = () => {
   const fetchPosts = async (pageNumber = 1) => {
     try {
       setIsLoading(true);
-      const res = await getAllPosts(pageNumber, 5); // טוען 5 פוסטים בכל פעם
+      const res = await getAllPosts(pageNumber, 5);
       if (pageNumber === 1) {
-        setPosts(res.posts); // טעינה ראשונית
+        setPosts(res.posts);
       } else {
-        setPosts((prevPosts) => [...prevPosts, ...res.posts]); // טעינה נוספת
+        setPosts((prevPosts) => [...prevPosts, ...res.posts]);
       }
       setHasMore(pageNumber < res.totalPages);
     } catch (err) {
