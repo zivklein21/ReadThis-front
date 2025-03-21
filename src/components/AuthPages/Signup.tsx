@@ -3,10 +3,12 @@ import { Button, Typography } from "@mui/material";
 import { Link, useNavigate } from "react-router-dom";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
-import { GoogleLogin, CredentialResponse } from "@react-oauth/google";
+import { GoogleLogin } from "@react-oauth/google";
 import axios, { AxiosError } from "axios";
 import styles from "./Auth.module.css";
 import readThis from "../../assets/readThis.svg";
+import { googleSignin, loginUser} from "../../Utils/user_service";
+
 
 const SignUp: React.FC = () => {
     const navigate = useNavigate();
@@ -57,7 +59,10 @@ const SignUp: React.FC = () => {
   
       console.log("Signup success:", response.data);
       setErrorMessage("");
-      navigate("/signin");
+      await loginUser(username, password);
+      setTimeout(() => {
+        navigate("/");
+      }, 1000);
     } catch (err) {
       const error = err as AxiosError<{ message?: string }>;
       console.error("Signup error:", error);
@@ -74,8 +79,16 @@ const SignUp: React.FC = () => {
     }
   };
 
-  const googleResponseMessage = (credentialResponse: CredentialResponse) => {
-    console.log("Google Response:", credentialResponse);
+  const handleGoogleLogin = async (response: any) => {
+    try {
+      const userData = await googleSignin(response.credential);
+      console.log("Google Login Success:", userData);
+      setTimeout(() => {
+        navigate("/");
+      }, 1000);
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   const googleErrorMessage = () => {
@@ -163,10 +176,9 @@ const SignUp: React.FC = () => {
           Sign Up
         </button>
 
-        <GoogleLogin
-          onSuccess={googleResponseMessage}
-          onError={googleErrorMessage}
-        />
+         <GoogleLogin
+                  onSuccess={handleGoogleLogin} onError={googleErrorMessage}
+                />
 
         <p className={styles.text}>
           Already have an account?{" "}

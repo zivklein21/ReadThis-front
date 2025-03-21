@@ -78,7 +78,7 @@ const Profile: React.FC = () => {
             comments: post.comments,
             imageUrl: post.imageUrl,
           }));
-  
+          console.log("Profile image URL in React:", user?.imageUrl);
           setPosts(transformedPosts);
           setError(null);
         } catch (err: any) {
@@ -144,9 +144,15 @@ const Profile: React.FC = () => {
             ) : (
               <img
                 className={styles.profileImage}
-                src={newProfileImage || `${SERVER_URL}${user.imageUrl}`}
+                src={
+                  newProfileImage ||
+                  (user.imageUrl?.startsWith("http") ? user.imageUrl : `${SERVER_URL}${user.imageUrl}`)
+                }
                 alt={user.username}
+                referrerPolicy="no-referrer"
+                crossOrigin="anonymous"
               />
+              
             )}
           </div>
           <div className={styles.profileDetails}>

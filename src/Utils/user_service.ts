@@ -126,12 +126,14 @@ export const getUser = async (): Promise<UserResponse> => {
 
 
 export const googleSignin = async (tokenId: string): Promise<void> => {
-  const { data, status } = await api.post('/auth/google', {
-      credential: tokenId,
+  const { data, status } = await api.post('/auth/google-auth', {
+    credential: tokenId,
   });
+
   if (status !== 200) {
-      throw new Error('Error logging in with Google');
+    throw new Error('Error logging in with Google');
   }
+
   localStorage.setItem('accessToken', data.accessToken);
   localStorage.setItem('refreshToken', data.refreshToken);
   localStorage.setItem('userId', (await getUser())._id);
