@@ -150,36 +150,31 @@ const PostPage: React.FC = () => {
             </div>
           )}
 
-          <Post
-            _id={post._id}
-            title={
-              isEditing ? (
-                <input
-                  type="text"
-                  value={editedTitle}
-                  onChange={(e) => setEditedTitle(e.target.value)}
-                  className={styles.input}
-                />
-              ) : (
-                post.title
-              )
-            }
-            content={
-              isEditing ? (
-                <textarea
-                  value={editedContent}
-                  onChange={(e) => setEditedContent(e.target.value)}
-                  className={styles.textarea}
-                />
-              ) : (
-                post.content
-              )
-            }
-            owner={post.owner}
-            usersWhoLiked={post.usersWhoLiked}
-            comments={post.comments}
-            imageUrl={post.imageUrl}
-          />
+          {isEditing ? (
+            <>
+              <input
+                type="text"
+                value={editedTitle}
+                onChange={(e) => setEditedTitle(e.target.value)}
+                className={styles.input}
+              />
+              <textarea
+                value={editedContent}
+                onChange={(e) => setEditedContent(e.target.value)}
+                className={styles.textarea}
+              />
+            </>
+          ) : (
+            <Post
+              _id={post._id}
+              title={post.title}
+              content={post.content}
+              owner={post.owner}
+              usersWhoLiked={post.usersWhoLiked}
+              comments={post.comments}
+              imageUrl={post.imageUrl}
+            />
+          )}
 
           {isEditing && (
             <div className={styles.uploadContainer}>

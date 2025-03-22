@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { fetchBookRecommendations } from "../../Utils/books_service";
+import style from "./Books.module.css";
 
 interface Props {
     bookTitle: string;
     onClose: () => void;
 }
 
-const BookRecommendationsPopup: React.FC<Props> = ({ bookTitle, onClose }) => {
+const BookRecommendationsPopup: React.FC<Props> = ({ bookTitle,  }) => {
     const [recommendations, setRecommendations] = useState<string[]>([]);
     const [loading, setLoading] = useState(true);
 
@@ -29,7 +30,7 @@ const BookRecommendationsPopup: React.FC<Props> = ({ bookTitle, onClose }) => {
     }, [bookTitle]);
 
     return (
-        <div className="popup">
+        <div className={style.popup}>
             <h2>📚 Recommended Books</h2>
             {loading ? (
                 <p>Loading recommendations...</p>

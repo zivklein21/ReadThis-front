@@ -44,3 +44,10 @@
   cursor: pointer;
   border-radius: 5px;
 }
+
+.popup h2,
+.popup strong,
+.popup ul,
+.popup p {
+  color: #333333; /* אפור כהה כהה */
+}

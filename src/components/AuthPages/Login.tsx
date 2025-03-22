@@ -21,9 +21,11 @@ const SignIn: React.FC = () => {
     try {
       setError("");
       console.log("Attempting login...");
-  
+      
       const data = await loginUser(username, password);
       console.log("Login successful:", data);
+
+      
     
       navigate("/");
     } catch (error) {

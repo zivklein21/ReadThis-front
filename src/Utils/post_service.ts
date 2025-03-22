@@ -1,6 +1,5 @@
 import api from "./api";
 import { PostProps } from "../components/HomePage/Posts/Post";
-import { SERVER_URL } from "./vars";
 
 interface PostsResponse {
   _id: string;
@@ -33,6 +32,7 @@ const DEFAULT_POST: PostProps = {
     username: "",
     image: "",
   },
+  imageUrl: "",
   comments: [],
 };
 
@@ -93,9 +93,8 @@ export const getAllPosts = async (page = 1, limit = 5) => {
 };
 
 // Fetch a post by ID
-export const getPostById = async (postId: string): Promise<void> => {
+export const getPostById = async (postId: string): Promise<PostProps> => {
   const response = await api.get(`/posts/${postId}`);
-
   return response.data;
 };
 
@@ -134,7 +133,7 @@ export const getMyPosts = async () => {
   }
 };
 
-export const updatePost = async (postId: string, formData: FormData) => {
+export const updatePost = async (postId: string, formData: FormData) :Promise<PostProps>=> {
   const res = await api.put(`/posts/${postId}`, formData);
   return res.data;
 };

@@ -47,7 +47,7 @@ const Home: React.FC = () => {
         setPosts((prevPosts) => [...prevPosts, ...res.posts]);
       }
       setHasMore(pageNumber < res.totalPages);
-    } catch (err) {
+    } catch (err: any) {
       setError(err.response?.data?.message || "Failed to load posts.");
     } finally {
       setIsLoading(false);

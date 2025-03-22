@@ -40,7 +40,7 @@ const Post: React.FC<PostProps> = ({
   imageUrl,
 }) => {
   const navigate = useNavigate();
-  const [open, setOpen] = useState(false);
+  const [, setOpen] = useState(false);
   const [liked, setLiked] = useState(
     localStorage.getItem("userId")
       ? usersWhoLiked.includes(localStorage.getItem("userId")!)
@@ -121,7 +121,7 @@ const Post: React.FC<PostProps> = ({
           onClick={() => setRecommendPopup(!recommendPopup)}
         >
           {" "}
-          <FaStar className="recommendIcon" />
+          <FaStar className={styles.recommendIcon} />
         </div>
       </div>
       {recommendPopup && (

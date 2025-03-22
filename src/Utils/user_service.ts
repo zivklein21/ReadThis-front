@@ -40,6 +40,8 @@ export const loginUser = async (
     password,
   });
   // Save tokens in localStorage
+  console.log("testing");
+  console.log(response);
   console.log(response.data._id);
   localStorage.setItem("userId", response.data._id);
   saveTokens(response.data.accessToken, response.data.refreshToken);

@@ -52,7 +52,7 @@ const SignUp: React.FC = () => {
       formData.append("password", password);
       formData.append("image", profileImage);
   
-      const response = await axios.post("http://localhost:3000/auth/register", formData, {
+      const response = await axios.post("https://node56.cs.colman.ac.il/auth/register", formData, {
         headers: { "Content-Type": "multipart/form-data" },
         withCredentials: true,
       });
